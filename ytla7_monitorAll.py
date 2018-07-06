@@ -331,7 +331,7 @@ while (1):
         flogIFLO_Y.close()
 
         # dictionaries, representing documents to be inserted into the DB
-        data_of_8 = {} # one for each of 7 antennas plus lucky number 8
+        data_of_8 = {} # one for each of 0-6 antennas plus lucky number 7
         logSys = {} # data found in the logSys file
         # data found in the logLF_X file.
         data_of_lfI_X = {

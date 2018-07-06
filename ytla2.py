@@ -33,7 +33,7 @@ def main():
             while not line:
                 line = fp.readline().split("    ")
                 logSys_line_count += 1
-            datum.timestamp = line[0]
+            datum.timestamp = line[0] # take away that underscore?
             datum.NTState = line[1]
             datum.NTSelect = line[2]
             datum.LOfreq = line[3]
@@ -119,7 +119,7 @@ def main():
                 antennas[antenna].iflo_y = float((line[antenna]).strip())
             logIFLO_Y_line_count += 1
 
-        datum.antennas = antennas # include the antennas in the record
+        datum.antennas = antennas # include the antenna data in the record
 
         datum.save() # insert the record into the DB
 

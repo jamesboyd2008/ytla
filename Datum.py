@@ -17,7 +17,7 @@ class Datum(Document):
     nt_select = StringField() # also in logSys
     lo_freq = FloatField() # also in logSys
     lo_power = FloatField() # also in logSys
-    # 7 Antenna_Snapshot objects plus lucky number 8
+    # 0-6 Antenna_Snapshot objects plus lucky number 7
     antennas = ListField(EmbeddedDocumentField(Antenna_Snapshot)) 
     lfI_X = FloatField() # also in the logLF_X file
     lfQ_X = FloatField() # also in the logLF_X file
