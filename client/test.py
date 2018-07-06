@@ -104,23 +104,15 @@ def search():
     # antenna_6_y_values = []
     # lucky_no_7_y_values = []
 
-    antennas = [
-        [], # antenna_number_0
-        [], # antenna_number_1
-        [], # antenna_number_2
-        [], # antenna_number_3
-        [], # antenna_number_4
-        [], # antenna_number_5
-        [], # antenna_number_6
-        [] # lucky_no_7
-    ]
-    x_values, y_values = []
-
+    # a list of empty lists, each empty list representing an antenna.
+    # antennas 0-6, plus lucky_no_7 (for a total of 8)
+    y_values = [[]] * 8
+    x_values = []
 
     # TODO: add lists for datum attributes besides antennas
 
-
     data_gettin_visualized = []
+
     # client = pymongo.MongoClient('localhost', 27017)
     # db = client.ytla
     # collection = db['stats']
@@ -146,64 +138,21 @@ def search():
             # parse a string (datum.timestamp) as a datetime.datetime
             timestamp = datetime.strptime(datum.timestamp, "%Y-%m-%d %H:%M:%S")
             if (timestamp >= begin) and (timestamp <= end):
-                y_values.append(datum.antennas.iflo_x)
                 x_values.append(datum.timestamp)
+                # add the iflo_x value for each antenna
+                for antenna in y_values:
+                    y_values[antenna].append(datum.antennas[antenna].iflo_x)
 
-        for antenna in antennas:
-            antennas[antenna] = Scatter(
-                y=eth_last_price,# pickup here: appropriate x & y values for each antenna
-                x=eth_timestamp,
-                name='ETH Last Price',
-                mode='lines+markers')
-
-
-        antenna_0 = Scatter(
-            y=eth_last_price,
-            x=eth_timestamp,
-            name='ETH Last Price',
-            mode='lines+markers')
-
-        antenna_1 = Scatter(
-            y=eth_best_bid,
-            x=eth_timestamp,
-            name='ETH Best Bid',
-            mode='lines+markers')
-
-        antenna_2 = Scatter(
-            y=eth_best_ask,
-            x=eth_timestamp,
-            name='ETH Best Ask',
-            mode='lines+markers')
-
-        antenna_3 = Scatter(
-            y=eth_last_price,
-            x=eth_timestamp,
-            name='ETH Last Price',
-            mode='lines+markers')
-
-        antenna_4 = Scatter(
-            y=eth_best_bid,
-            x=eth_timestamp,
-            name='ETH Best Bid',
-            mode='lines+markers')
-
-        antenna_5 = Scatter(
-            y=eth_best_ask,
-            x=eth_timestamp,
-            name='ETH Best Ask',
-            mode='lines+markers')
-
-        antenna_6 = Scatter(
-            y=eth_last_price,
-            x=eth_timestamp,
-            name='ETH Last Price',
-            mode='lines+markers')
-
-        lucky_no_7 = Scatter(
-            y=eth_last_price,
-            x=eth_timestamp,
-            name='ETH Last Price',
-            mode='lines+markers')
+        for antenna in y_values:
+            data_gettin_visualized.append(
+                Scatter(
+                    y=y_values[antenna],
+                    x=x_values,
+                    name='IFLO_X',
+                    mode='lines+markers'
+                    # TODO: pick a color for the line
+                )
+            )
 
     # elif (attribute == "btc"):
 
@@ -279,7 +228,11 @@ def search():
     #         name='BTC Best Ask minus 10^1',
     #         mode='lines+markers')
 
-    title = attribute + " Markets Graph"
+    # title = attribute + " Markets Graph"
+    # beginning = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    beginning = begin.strftime('%Y-%m-%d %H:%M:%S')
+    ending = end.strftime('%Y-%m-%d %H:%M:%S')
+    title = f"{attribute } from {beginng} to {ending}"
     plotly.offline.plot(
         {
             # 'data': [eth_lp, eth_bb, eth_ba, btc_lp, btc_bb, btc_ba],
