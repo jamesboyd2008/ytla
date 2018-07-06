@@ -1,5 +1,9 @@
 #!/usr/bin/python3.6
-
+"""
+This program seeds a database (DB) with data from the cosmos,
+written to text files,
+having been collected by the Yuan-Tseh Lee Array (ytla) radio telescope.
+"""
 from Datum import Datum
 from Antenna_Snapshot import Antenna_Snapshot
 from mongoengine import *
@@ -43,6 +47,7 @@ def main():
             # a single antenna at a single moment.
             antennas.append(Antenna_Snapshot())
 
+# TODO: DRY this up
         filepath = 'logCorr_X'
         with open(filepath) as fp:
             i = 0
@@ -55,11 +60,11 @@ def main():
                 line = fp.readline().split("    ")
                 logCorr_X_line_count += 1
             for antenna in range(0,7):
-                antennas[antenna].sel1X = line[2]#sel1X[antenna]
-                antennas[antenna].sel2X = line[3]#sel2X[antenna]
-                antennas[antenna].intswX = line[4]#intswValX[antenna]
-                antennas[antenna].hybrid_selX = line[5]#hybrid_selValX[antenna]
-                antennas[antenna].intLenX = float((line[6]).strip())#intLenX[antenna]
+                antennas[antenna].sel1X = line[2]
+                antennas[antenna].sel2X = line[3]
+                antennas[antenna].intswX = line[4]
+                antennas[antenna].hybrid_selX = line[5]
+                antennas[antenna].intLenX = float((line[6]).strip())
                 line = fp.readline().split("    ")
                 logCorr_X_line_count += 1
 
@@ -76,11 +81,11 @@ def main():
                 logCorr_Y_line_count += 1
             # print(line)
             for antenna in range(0,7):
-                antennas[antenna].sel1Y = line[2]# sel1Y[antenna]
-                antennas[antenna].sel2Y = line[3]# sel2Y[antenna]
-                antennas[antenna].intswY = line[4]# intswValY[antenna]
-                antennas[antenna].hybrid_selY = line[5]# hybrid_selValY[antenna]
-                antennas[antenna].intLenY = float((line[6]).strip())# intLenY[antenna]
+                antennas[antenna].sel1Y = line[2]
+                antennas[antenna].sel2Y = line[3]
+                antennas[antenna].intswY = line[4]
+                antennas[antenna].hybrid_selY = line[5]
+                antennas[antenna].intLenY = float((line[6]).strip())
                 line = fp.readline().split("    ")
                 logCorr_Y_line_count += 1
 
