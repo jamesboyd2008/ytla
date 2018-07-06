@@ -4,7 +4,8 @@ To visualize the data:
 1. SSH or screen share onto the machine on the mauna
 2. cd anaconda3/
 3. conda install -c conda-forge plotly
-4. pip install pymongo
+4. (skip this step) pip install pymongo
+4. pip install mongoengine
 5. conda install -c anaconda git
 6. git clone https://github.com/jamesboyd2008/[NAME_OF_REPOSITORY].git
 7. conda install -c anaconda virtualenv (maybe unnecessary)
