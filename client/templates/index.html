@@ -1,0 +1,43 @@
+
+
+<html>
+	<head>
+		<title>{{t}}</title>
+		<!-- href="/static/assets/style.css"-->
+		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/style.css')}}" >
+		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/emoji.css')}}" >
+		<!-- <link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/bootsrap.css')}}" > -->
+		<!-- <link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/bootsrap-grid.css')}}" > -->
+		<script src="{{ url_for('static',filename='assets/js/twemoji.min.js')}}"></script>
+		<script src="{{ url_for('static',filename='assets/js/emoji.js')}}"></script>
+		<!-- <script src="{{ url_for('static',filename='assets/js/bootstrap.js')}}"></script> -->
+	</head>
+<body>
+	<h1>{{ h }}</h1>
+	<hr>
+	<div span="right">
+	<form action="/search"	method="GET" >
+		<table class="none" id="close">
+		<tr>
+		<td></td><td></td>
+		<td><big><b>Search Reference:</b></big></td>
+		<td><select name="refer" required>
+			{% for attr in attributes %}
+				<option value={{ attr }}>{{ attr }}</option>
+			{% endfor %}
+		</select></td>
+		<td><input type="text" name="begin" placeholder="begin" size="15" /></td>
+		<td><input type="text" name="end" placeholder="end" size="15" /></td>
+		<td><button type="submit">Search</button></td>
+		</tr>
+		</table>
+	</form>
+	</div>
+
+	<hr>
+
+	<script>
+
+	</script>
+</body>
+</html>
