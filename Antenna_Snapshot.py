@@ -18,5 +18,5 @@ class Antenna_Snapshot(EmbeddedDocument):
     intswY = StringField() # also in the logCorr_Y file
     hybrid_selY = StringField() # also in logCorr_Y
     intLenY = FloatField() # also in the logCorr_Y file
-    iflo_x = FloatField()) # also in the logIFLO_X file
-    iflo_y = FloatField()) # also in the logIFLO_Y file
+    iflo_x = FloatField() # also in the logIFLO_X file
+    iflo_y = FloatField() # also in the logIFLO_Y file
