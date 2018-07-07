@@ -1,3 +1,6 @@
+
+from Antenna_Snapshot import Antenna_Snapshot
+from Datum import Datum
 from bson.objectid import ObjectId # For ObjectId to work
 from flask import Flask, render_template,request,redirect,url_for # For flask implementation
 # from flask_bootstrap import Bootstrap
@@ -8,7 +11,7 @@ from flask import Flask, render_template,request,redirect,url_for # For flask im
     # BooleanField, SubmitField, IntegerField, FormField, validators
 # from wtforms.validators import Required
 import time
-import datetime
+from datetime import datetime
 from mongoengine import *
 import plotly
 # import pymongo
@@ -68,8 +71,13 @@ def tasks ():
 @app.route("/search", methods=['GET'])
 def search():
     #Searching a Task with various references
-    begin = request.values.get("begin")
-    end = request.values.get("end")
+    begin_str = request.values.get("begin")
+    end_str = request.values.get("end")
+
+    # parse a string as a datetime.datetime
+    begin = datetime.strptime(begin_str, "%Y-%m-%d %H:%M:%S")
+    end = datetime.strptime(end_str, "%Y-%m-%d %H:%M:%S")
+
     attribute = request.values.get("refer")
     # if(key=="_id"):
     # 	todos_l = todos.find({refer:ObjectId(key)})
@@ -137,23 +145,27 @@ def search():
         for datum in Datum.objects:
             # parse a string (datum.timestamp) as a datetime.datetime
             timestamp = datetime.strptime(datum.timestamp, "%Y-%m-%d %H:%M:%S")
+            # TODO: check the accuracy of these timestamps
             if (timestamp >= begin) and (timestamp <= end):
                 x_values.append(datum.timestamp)
                 # add the iflo_x value for each antenna
-                for antenna in y_values:
+                # for antenna in y_values:
+                for antenna in range(0, 8):
                     y_values[antenna].append(datum.antennas[antenna].iflo_x)
 
-        for antenna in y_values:
+        # for antenna in y_values:
+        for antenna in range(0, 8):
             data_gettin_visualized.append(
                 Scatter(
                     y=y_values[antenna],
                     x=x_values,
                     name='IFLO_X',
                     mode='lines+markers'
-                    # TODO: pick a color for the line
                 )
             )
-
+            # TODO: pick a color for the lines
+            print(f"y_values[antenna]: {y_values[antenna]}")
+            print(f"antenna: {antenna}")
     # elif (attribute == "btc"):
 
 
@@ -232,15 +244,22 @@ def search():
     # beginning = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     beginning = begin.strftime('%Y-%m-%d %H:%M:%S')
     ending = end.strftime('%Y-%m-%d %H:%M:%S')
-    title = f"{attribute } from {beginng} to {ending}"
+    title = f"{attribute } from {beginning} to {ending}"
+
+    print(f"type(data_gettin_visualized[0]): {type(data_gettin_visualized[0])}")
+    #              type(attribute_lp): <class 'plotly.graph_objs.graph_objs.Scatter'>
+    # type(data_gettin_visualized[0]): <class 'plotly.graph_objs.graph_objs.Scatter'>
     plotly.offline.plot(
         {
             # 'data': [eth_lp, eth_bb, eth_ba, btc_lp, btc_bb, btc_ba],
             # 'data': [btc_lp, btc_bb, btc_ba],
             # 'data': [attribute_lp, attribute_bb, attribute_ba],
-            'data': [data_gettin_visualized],
-            'layout': Layout(title = title)},
-        filename=r"visualization.html", auto_open=True)
+            'data': data_gettin_visualized,
+            'layout': Layout(title = title)
+        },
+        filename=r"visualization.html",
+        auto_open=True
+    )
 
     # return render_template('searchlist.html',todos=todos,t=title,h=heading)
     a1 = "active"
