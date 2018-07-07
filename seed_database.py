@@ -33,7 +33,7 @@ def main():
             while not line:
                 line = fp.readline().split("    ")
                 logSys_line_count += 1
-            datum.timestamp = line[0] # take away that underscore?
+            datum.timestamp = line[0]
             datum.NTState = line[1]
             datum.NTSelect = line[2]
             datum.LOfreq = line[3]
