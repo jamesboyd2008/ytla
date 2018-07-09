@@ -202,14 +202,8 @@ def search():
     ending = end.strftime('%Y-%m-%d %H:%M:%S')
     title = f"{attribute } from {beginning} to {ending}"
 
-    # print(f"type(data_gettin_visualized[0]): {type(data_gettin_visualized[0])}")
-    #              type(attribute_lp): <class 'plotly.graph_objs.graph_objs.Scatter'>
-    # type(data_gettin_visualized[0]): <class 'plotly.graph_objs.graph_objs.Scatter'>
     plotly.offline.plot(
         {
-            # 'data': [eth_lp, eth_bb, eth_ba, btc_lp, btc_bb, btc_ba],
-            # 'data': [btc_lp, btc_bb, btc_ba],
-            # 'data': [attribute_lp, attribute_bb, attribute_ba],
             'data': data_gettin_visualized,
             'layout': Layout(title = title)
         },

@@ -8,6 +8,14 @@ if __name__ == '__main__':
     import subprocess
     from subprocess import *
     from datetime import datetime
+
+    # class for all same-timestamp data
+    from Datum import Datum
+    # class for all same-antenna data
+    from Antenna_Snapshot import Antenna_Snapshot
+    # Python/MongoDB interface that supports python objects as DB records
+    from mongoengine import *
+
     import time
     import redis
 
@@ -21,6 +29,27 @@ if __name__ == '__main__':
     verbose=opts.verbose
 
 redisObject=redis.StrictRedis(host='localhost',port=6379, db=0)
+# Connect to the MongoDB database (DB)
+# It is assumed that mongod is running on 'localhost' at port 27017
+# https://docs.mongodb.com/manual/tutorial/manage-mongodb-processes/#start-mongod-processes
+connect('ytla')
+
+# intantiate a Datum object to hold all data associated with the same timestamp
+# such as antenna data
+datum = Datum()
+
+# a collection for Antenna_Snapshot objects
+antennas = []
+# 7 antennas exist
+# an 8th antenna is added for consistency
+for antenna in range(0, 8):
+    # initialize an Antenna_Snapshot object to contain all data specific to
+    # a single antenna at a single moment.
+    antennas.append(Antenna_Snapshot())
+
+# Add the antennas to the record
+datum.antennas = antennas[]
+
 ant=[0,1,2,3,4,5,6,7]
 dictInt = {22070: 0.646, 34164: 1.000, 170898: 5.000}
 config_fileX='/home/corr/ytla/ytla7X_280m.conf'
@@ -80,6 +109,10 @@ jCorrY=0
 jSys=0
 while (1):
         timenow = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+
+        # note when the data was collected
+        datum.timestamp = timenow
+
         print timenow
         flogCorrX=open(logfileX,"a")
         i=0
@@ -134,7 +167,15 @@ while (1):
         redisObject.lpush('intswX',str(intswValX))
         redisObject.lpush('hybrid_selX',str(hybrid_selValX))
         redisObject.lpush('intLenX',str(intLenX))
-        
+
+        # Add data for each antenna
+        for i in range(0, 7):
+            datum.antennas[i].sel1X = sel1X[i]
+            datum.antennas[i].sel2X = sel2X[i]
+            datum.antennas[i].intswX = intswValX[i]
+            datum.antennas[i].hybrid_selX = hybrid_selValX[i]
+            datum.antennas[i].intLenX = intLenX[i]
+
         if (jCorrX == 0):
           flogCorrX.write("%20s %17s %20s %20s %15s \n"%("Timestamp", "Walsh Num", "Interrupt Select", "SRR Selection", "Integration time"))
           flogCorrX.write("%80s\n"%("           "))
@@ -200,6 +241,14 @@ while (1):
         redisObject.lpush('hybrid_selY',str(hybrid_selValY))
         redisObject.lpush('intLenY',str(intLenY))
 
+        # Add data for each antenna
+        for i in range(0, 7):
+            datum.antennas[i].sel1Y = sel1Y[i]
+            datum.antennas[i].sel2Y = sel2Y[i]
+            datum.antennas[i].intswY = intswValY[i]
+            datum.antennas[i].hybrid_selY = hybrid_selValY[i]
+            datum.antennas[i].intLenY = intLenY[i]
+
         if (jCorrY == 0):
           flogCorrY.write("%20s %17s %20s %20s %15s \n"%("Timestamp", "Walsh Num", "Interrupt Select", "SRR Selection", "Integration time"))
           flogCorrY.write("%80s\n"%("           "))
@@ -241,7 +290,14 @@ while (1):
         redisObject.lpush('NTSelect',NTSelect)
         redisObject.lpush('LOfreq',LOfreq)
         redisObject.lpush('LOpower',LOpower)
-        
+
+        # Add data associated with all antennas to the record
+        datum.timestamp = timenow
+        datum.nt_state = NTState
+        datum.nt_select = NTSelect
+        datum.lo_freq = LOfreq
+        datum.lo_power = LOpower
+
         if (jSys == 0):
             flogSys.write("{:^20}" "{:^30}" "{:25}" "{:^20}" "{:^20}\n".format("Timestamp", "Noise/Tone State", "Noise/Tone Selection", "LO frequency (MHz)", "LO power (dBm)"))
             flogSys.write("{:^80}\n".format("           "))
@@ -291,7 +347,30 @@ while (1):
         redisObject.lpush('lfQ_Y',str(lf_Yfloat[1::2]))
         redisObject.lpush('IFLO_X',str([Rx0_1[4], Rx1_1[4], Rx2_1[4], Rx3_1[4], Rx4_1[4], Rx5_1[4], Rx6_1[4]]))
         redisObject.lpush('IFLO_Y',str([Rx0[4], Rx1[4], Rx2[4], Rx3[4], Rx4[4], Rx5[4], Rx6[4]]))
-        
+
+        # Assign values for lfI, X and Y
+        for i in range(0, 14, 2):
+            datum.lfI_X[i] = lf_Xfloat[i]
+            datum.lfI_Y[i] = lf_Yfloat[i]
+
+        # Assign values for lfQ, X and Y
+        for i in range(1, 14, 2):
+            datum.lfQ_X[i] = lf_Xfloat[i]
+            datum.lfQ_Y[i] = lf_Yfloat[i]
+
+        # Create lists for ease of iteration
+        iflo_x_s = [Rx0_1, Rx1_1, Rx2_1, Rx3_1, Rx4_1, Rx5_1, Rx6_1]
+        iflo_y_s = [Rx0  , Rx1  , Rx2  , Rx3  , Rx4  , Rx5  , Rx6  ]
+
+        # Assign values for iflo, x and y, for every antenna
+        for i in range(0, 7):
+            datum.antennas[i].iflo_x = iflo_x_s[i]
+            datum.antennas[i].iflo_y = iflo_y_s[i]
+
+        # insert the record into the DB
+        datum.save()
+
+
         flogLF_Y.write("%25s %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f\n"%(timenow, float(lf_Y[0]), float(lf_Y[1]), float(lf_Y[2]), float(lf_Y[3]), float(lf_Y[4]), float(lf_Y[5]), float(lf_Y[6]), float(lf_Y[7]), float(lf_Y[8]), float(lf_Y[9]), float(lf_Y[10]), float(lf_Y[11]), float(lf_Y[12]), float(lf_Y[13])))
         flogLF_Y.write("%80s\n"%("           "))
 
@@ -309,5 +388,3 @@ while (1):
         flogIFLO_X.close()
         flogIFLO_Y.close()
         time.sleep(2)
-
-

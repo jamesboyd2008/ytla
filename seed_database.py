@@ -102,7 +102,6 @@ def main():
                 logIFLO_X_line_count += 1
             for antenna in range(1, 8):
                 antennas[antenna - 1].iflo_x = float((line[antenna]).strip())
-            antennas[7].iflo_x = 6.0 # lucky no. 7 for July, 2018
             logIFLO_X_line_count += 1
 
         filepath = 'logIFLO_Y'
@@ -118,7 +117,6 @@ def main():
                 logIFLO_Y_line_count += 1
             for antenna in range(1, 8):
                 antennas[antenna - 1].iflo_y = float((line[antenna]).strip())
-            antennas[7].iflo_y = 6.0 # lucky no. 7 for July, 2018
             logIFLO_Y_line_count += 1
 
         datum.antennas = antennas # include the antenna data in the record

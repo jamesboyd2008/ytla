@@ -1,15 +1,36 @@
 #!/usr/bin/python2.7
 
 import corr, numpy,sys,os,time,logging
+import Datum
+
+# Insert a record into MongoDB
+def mongo_insert(record):
+    # Create a client that connects with the local MongoDB server running at port
+    # 27017. This won't work unless mongod is already running, via a command
+    # something like  ==> sudo service mongod start
+    client = pymongo.MongoClient('localhost', 27017)
+    # use this same DB name when reading from the DB
+    db = client.ytla
+    # A collection is a group of documents stored in MongoDB,
+    # and can be thought of as roughly the equivalent of a table in a
+    # relational database.
+    collection = db.['stats']
+
+    try:
+        rec_id = collection.insert_one(record).inserted_id
+    except pymongo.errors.ConnectionFailure as err:
+        # print('Connection Error: ', err, sep='')
+        print('Connection Error: ', err)
 
 
 if __name__ == '__main__':
-    from optparse import OptionParser 
+    from optparse import OptionParser
     import subprocess
     from subprocess import *
     from datetime import datetime
     import time
     import redis
+    import pymongo # contains tools for interacting with MongoDB
 
     p = OptionParser()
     p.set_usage('%prog [options] ')
@@ -134,7 +155,7 @@ while (1):
         redisObject.lpush('intswX',str(intswValX))
         redisObject.lpush('hybrid_selX',str(hybrid_selValX))
         redisObject.lpush('intLenX',str(intLenX))
-        
+
         if (jCorrX == 0):
           flogCorrX.write("%20s %17s %20s %20s %15s \n"%("Timestamp", "Walsh Num", "Interrupt Select", "SRR Selection", "Integration time"))
           flogCorrX.write("%80s\n"%("           "))
@@ -241,7 +262,7 @@ while (1):
         redisObject.lpush('NTSelect',NTSelect)
         redisObject.lpush('LOfreq',LOfreq)
         redisObject.lpush('LOpower',LOpower)
-        
+
         if (jSys == 0):
             flogSys.write("{:^20}" "{:^30}" "{:25}" "{:^20}" "{:^20}\n".format("Timestamp", "Noise/Tone State", "Noise/Tone Selection", "LO frequency (MHz)", "LO power (dBm)"))
             flogSys.write("{:^80}\n".format("           "))
@@ -291,7 +312,7 @@ while (1):
         redisObject.lpush('lfQ_Y',str(lf_Yfloat[1::2]))
         redisObject.lpush('IFLO_X',str([Rx0_1[4], Rx1_1[4], Rx2_1[4], Rx3_1[4], Rx4_1[4], Rx5_1[4], Rx6_1[4]]))
         redisObject.lpush('IFLO_Y',str([Rx0[4], Rx1[4], Rx2[4], Rx3[4], Rx4[4], Rx5[4], Rx6[4]]))
-        
+
         flogLF_Y.write("%25s %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f %4.2f\n"%(timenow, float(lf_Y[0]), float(lf_Y[1]), float(lf_Y[2]), float(lf_Y[3]), float(lf_Y[4]), float(lf_Y[5]), float(lf_Y[6]), float(lf_Y[7]), float(lf_Y[8]), float(lf_Y[9]), float(lf_Y[10]), float(lf_Y[11]), float(lf_Y[12]), float(lf_Y[13])))
         flogLF_Y.write("%80s\n"%("           "))
 
@@ -308,6 +329,83 @@ while (1):
         flogLF_Y.close()
         flogIFLO_X.close()
         flogIFLO_Y.close()
+
+        # dictionaries, representing documents to be inserted into the DB
+        data_of_8 = {} # one for each of 0-6 antennas plus lucky number 7
+        logSys = {} # data found in the logSys file
+        # data found in the logLF_X file.
+        data_of_lfI_X = {
+            'Timestamp': 0, # this is a placeholder
+            'lfI_X': [] # this will hold 13 values
+        }
+        # data found in the logLF_X file.
+        data_of_lfQ_X = {
+            'Timestamp': 0, # this is a placeholder
+            'lfQ_X': [] # this will hold 13 values
+        }
+        # data found in the logLF_Y file.
+        data_of_lfI_Y = {
+            'Timestamp': 0, # this is a placeholder
+            'lfI_Y': [] # this will hold 13 values
+        }
+        # data found in the logLF_Y file.
+        data_of_lfQ_Y = {
+            'Timestamp': 0, # this is a placeholder
+            'lfQ_Y': [] # this will hold 13 values
+        }
+
+        # from above, ~ lines 270 & 274
+        iflo_x_s = [Rx0_1, Rx1_1, Rx2_1, Rx3_1, Rx4_1, Rx5_1, Rx6_1, 0]
+        iflo_y_s = [Rx0  , Rx1  , Rx2  , Rx3  , Rx4  , Rx5  , Rx6  , 0]
+
+        # key/value pairs are assigned to the data_of_8 dictionary
+        for antenna in range(0,8):
+            data_of_8['antenna'] = antenna
+            data_of_8['Timestamp'] = timenow
+            data_of_8['sel1X'] = sel1X[antenna]
+            data_of_8['sel2X'] = sel2X[antenna]
+            data_of_8['intswX'] = intswValX[antenna]
+            data_of_8['hybrid_selX'] = hybrid_selValX[antenna]
+            data_of_8['intLenX'] = intLenX[antenna]
+            data_of_8['sel1Y'] = sel1Y[antenna]
+            data_of_8['sel2Y'] = sel2Y[antenna]
+            data_of_8['intswY'] = intswValY[antenna]
+            data_of_8['hybrid_selY'] = hybrid_selValY[antenna]
+            data_of_8['intLenY'] = intLenY[antenna]
+            data_of_8['IFLO_X'] = iflo_x_s[antenna]
+            data_of_8['IFLO_Y'] = iflo_y_s[antenna]
+
+        # key/value pairs are assigned to the logSys dictionary
+        logSys['Timestamp'] = timenow
+        logSys['NTState'] = NTState
+        logSys['NTSelect'] = NTSelect
+        logSys['LOfreq'] = LOfreq
+        logSys['LOpower'] = LOpower
+
+        # key/value pairs are assigned to the data_of_lfI_X and
+        #                                     data_of_lfQ_X dictionaries
+        data_of_lfI_X['Timestamp'] = timenow
+        for num in range(0, 14, 2):
+            data_of_lfI_X['lfI_X'][num] = lf_Xfloat[num]
+            data_of_lfI_Y['lfI_Y'][num] = lf_Yfloat[num]
+        data_of_lfI_Y['Timestamp'] = timenow
+        for num in range(1, 14, 2):
+            data_of_lfQ_X['lfQ_X'][num] = lf_Xfloat[num]
+            data_of_lfQ_Y['lfQ_Y'][num] = lf_Yfloat[num]
+
+        # the dictionaries are added to a single list to perform
+        # collection.insert_many(data)
+        data = [
+            data_of_8,
+            logSys,
+            data_of_lfI_X,
+            data_of_lfQ_X,
+            data_of_lfI_Y,
+            data_of_lfQ_Y
+        ]
+
+        # adding the documents to the DB
+        for datum in data:
+            mongo_insert(datum)
+
         time.sleep(2)
-
-
