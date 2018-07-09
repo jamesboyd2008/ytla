@@ -17,7 +17,7 @@ def main():
     logIFLO_X_line_count = 0
     logIFLO_Y_line_count = 0
 
-    for iteration in range(201):
+    for iteration in range(200):
 
         # the record to be inserted into the DB
         datum = Datum()
@@ -101,7 +101,8 @@ def main():
                 line = fp.readline().split("    ")
                 logIFLO_X_line_count += 1
             for antenna in range(1, 8):
-                antennas[antenna].iflo_x = float((line[antenna]).strip())
+                antennas[antenna - 1].iflo_x = float((line[antenna]).strip())
+            antennas[7].iflo_x = 6.0 # lucky no. 7 for July, 2018
             logIFLO_X_line_count += 1
 
         filepath = 'logIFLO_Y'
@@ -116,7 +117,8 @@ def main():
                 line = fp.readline().split("    ")
                 logIFLO_Y_line_count += 1
             for antenna in range(1, 8):
-                antennas[antenna].iflo_y = float((line[antenna]).strip())
+                antennas[antenna - 1].iflo_y = float((line[antenna]).strip())
+            antennas[7].iflo_y = 6.0 # lucky no. 7 for July, 2018
             logIFLO_Y_line_count += 1
 
         datum.antennas = antennas # include the antenna data in the record
