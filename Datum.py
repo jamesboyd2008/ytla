@@ -19,7 +19,11 @@ class Datum(Document):
     lo_power = FloatField() # also in logSys
     # 0-6 Antenna_Snapshot objects plus lucky number 7
     antennas = ListField(EmbeddedDocumentField(Antenna_Snapshot))
-    lfI_X = FloatField() # also in the logLF_X file
-    lfQ_X = FloatField() # also in the logLF_X file
-    lfI_Y = FloatField() # also in the logLF_Y file
-    lfQ_Y = FloatField() # also in the logLF_Y file
+     # also in the logLF_X file
+    lfI_X = ListField(FloatField(), default=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+     # also in the logLF_X file
+    lfQ_X = ListField(FloatField(), default=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+     # also in the logLF_Y file
+    lfI_Y = ListField(FloatField(), default=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+     # also in the logLF_Y file
+    lfQ_Y = ListField(FloatField(), default=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
