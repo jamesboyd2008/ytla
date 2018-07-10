@@ -17,7 +17,7 @@ import plotly
 # import pymongo
 from plotly.graph_objs import Layout, Scatter
 
-attributes = [
+attribute_names = [
     'sel1X',
     'sel2X',
     'intswX',
@@ -40,6 +40,31 @@ attributes = [
     'IFLO_X',
     'IFLO_Y'
 ]
+
+# for text to property conversion, for when they are spelled differently
+attributes = {
+    'sel1X': 'sel1X',
+    'sel2X': 'sel2X',
+    'intswX': 'intswX',
+    'hybrid_selX': 'hybrid_selX',
+    'intLenX': 'intLenX',
+    'sel1Y': 'sel1Y',
+    'sel2Y': 'sel2Y',
+    'intswY': 'intswY',
+    'hybrid_selY': 'hybrid_selY',
+    'intLenY': 'intLenY',
+    'Timestamp': 'timestamp',
+    'NTState': 'nt_state',
+    'NTSelect': 'nt_select',
+    'LOfreq': 'lo_freq',
+    'LOpower': 'lo_power',
+    # 'lfI_X': 'lfI_X',
+    # 'lfQ_X': 'lfQ_X',
+    # 'lfI_Y': 'lfI_Y',
+    # 'lfQ_Y': 'lfQ_Y',
+    'IFLO_X': 'iflo_x',
+    'IFLO_Y': 'iflo_y'
+}
 
 app = Flask(__name__)
 # Bootstrap(app)
@@ -66,10 +91,11 @@ def search():
     end_str = request.values.get("end")
 
     # parse a string as a datetime.datetime
-    begin = datetime.strptime(begin_str, "%Y-%m-%d %H:%M:%S")
-    end = datetime.strptime(end_str, "%Y-%m-%d %H:%M:%S")
+    begin = datetime.strptime(begin_str, "%Y-%m-%d_%H:%M:%S")
+    end = datetime.strptime(end_str, "%Y-%m-%d_%H:%M:%S")
 
-    attribute = request.values.get("refer")
+    attribute_name = request.values.get("refer")
+    attribute = attributes[attribute_name]
 
     # a list of empty lists, each empty list representing an antenna.
     # antennas 0-6, plus lucky_no_7 (for a total of 8)
@@ -83,7 +109,10 @@ def search():
      # assuming mongod is running on 'localhost' at port 27017
     connect('ytla')
 
-    if (attribute == "IFLO_X"):
+    # for attr in range:
+    #     if
+
+    # if (attribute == "IFLO_X"):
         # try:
         #     # for rec in collection.find({"instrument":"ETH"}):
         #     for rec in db.find({"antennas":"ETH"}):
@@ -97,31 +126,31 @@ def search():
         #     print(err)
 
         # query the DB, MongoEngine style
-        try:
-            for datum in Datum.objects:
-                # parse a string (datum.timestamp) as a datetime.datetime
-                timestamp = datetime.strptime(datum.timestamp, "%Y-%m-%d %H:%M:%S")
-                # TODO: check the accuracy of these timestamps
-                if (timestamp >= begin) and (timestamp <= end):
-                    x_values.append(datum.timestamp)
-                    # add the iflo_x value for each antenna
-                    # for antenna in range(1, 8):
-                    for antenna in range(0, 8):
-                        y_values[antenna].append(datum.antennas[antenna].iflo_x)
-        except Exception as err:
-            print(err)
+    try:
+        for datum in Datum.objects:
+            # parse a string (datum.timestamp) as a datetime.datetime
+            timestamp = datetime.strptime(datum.timestamp, "%Y-%m-%d_%H:%M:%S")
+            # TODO: check the accuracy of these timestamps
+            if (timestamp >= begin) and (timestamp <= end):
+                x_values.append(datum.timestamp)
+                # add the iflo_x value for each antenna
+                # for antenna in range(1, 8):
+                for antenna in range(0, 8):
+                    # y_values[antenna].append(datum.antennas[antenna].iflo_x)
+                    y_values[antenna].append(datum.antennas[antenna][attribute])
+    except Exception as err:
+        print(err)
 
-        # for antenna in range(1, 8):
-        for antenna in range(0, 8):
-            data_gettin_visualized.append(
-                Scatter(
-                    y=y_values[antenna],
-                    x=x_values,
-                    name=f"Antenna {antenna} IFLO_X",
-                    mode='lines+markers'
-                )
+    # for antenna in range(1, 8):
+    for antenna in range(0, 8):
+        data_gettin_visualized.append(
+            Scatter(
+                y=y_values[antenna],
+                x=x_values,
+                name=f"Antenna {antenna} {attribute_name}",
+                mode='lines+markers'
             )
-            # TODO: pick a color for the lines
+        )
     # elif (attribute == "btc"):
 
 
