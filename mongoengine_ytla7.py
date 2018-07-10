@@ -34,22 +34,6 @@ redisObject=redis.StrictRedis(host='localhost',port=6379, db=0)
 # https://docs.mongodb.com/manual/tutorial/manage-mongodb-processes/#start-mongod-processes
 connect('ytla')
 
-# intantiate a Datum object to hold all data associated with the same timestamp
-# such as antenna data
-datum = Datum()
-
-# a collection for Antenna_Snapshot objects
-antennas = []
-# 7 antennas exist
-# an 8th antenna is added for consistency
-for antenna in range(0, 8):
-    # initialize an Antenna_Snapshot object to contain all data specific to
-    # a single antenna at a single moment.
-    antennas.append(Antenna_Snapshot())
-
-# Add the antennas to the record
-datum.antennas = antennas[]
-
 ant=[0,1,2,3,4,5,6,7]
 dictInt = {22070: 0.646, 34164: 1.000, 170898: 5.000}
 config_fileX='/home/corr/ytla/ytla7X_280m.conf'
@@ -108,6 +92,22 @@ jCorrX=0
 jCorrY=0
 jSys=0
 while (1):
+# intantiate a Datum object to hold all data associated with the same timestamp
+# such as antenna data
+        datum = Datum()
+
+        # a collection for Antenna_Snapshot objects
+        antennas = []
+        # 7 antennas exist
+        # an 8th antenna is added for consistency
+        for antenna in range(0, 8):
+            # initialize an Antenna_Snapshot object to contain all data specific to
+            # a single antenna at a single moment.
+            antennas.append(Antenna_Snapshot())
+
+        # Add the antennas to the record
+        datum.antennas = antennas
+
         timenow = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
 
         # note when the data was collected
@@ -169,7 +169,7 @@ while (1):
         redisObject.lpush('intLenX',str(intLenX))
 
         # Add data for each antenna
-        for i in range(0, 7):
+        for i in range(0, 8):
             datum.antennas[i].sel1X = sel1X[i]
             datum.antennas[i].sel2X = sel2X[i]
             datum.antennas[i].intswX = intswValX[i]
@@ -242,7 +242,7 @@ while (1):
         redisObject.lpush('intLenY',str(intLenY))
 
         # Add data for each antenna
-        for i in range(0, 7):
+        for i in range(0, 8):
             datum.antennas[i].sel1Y = sel1Y[i]
             datum.antennas[i].sel2Y = sel2Y[i]
             datum.antennas[i].intswY = intswValY[i]
@@ -321,11 +321,11 @@ while (1):
           lf_X = [0.0] * 14
         try:
           Rx0, Rx1, Rx2, Rx3, Rx4, Rx5, Rx6 = numpy.loadtxt('/var/www/cgi-bin/aifileY', usecols=(0, 1 ,2 ,3, 4, 5, 6), unpack=False)
-        except IOError:
+        except ValueError:
           Rx0, Rx1, Rx2, Rx3, Rx4, Rx5, Rx6 = [0.0] * 7
         try:
           Rx0_1, Rx1_1, Rx2_1, Rx3_1, Rx4_1, Rx5_1, Rx6_1 = numpy.loadtxt('/var/www/cgi-bin/aifileX', usecols=(0, 1 ,2 ,3, 4, 5, 6), unpack=False)
-        except IOError:
+        except ValueError:
           Rx0_1, Rx1_1, Rx2_1, Rx3_1, Rx4_1, Rx5_1, Rx6_1 = [0.0] * 7
         i=0
         for line in fh_Y:
@@ -349,23 +349,29 @@ while (1):
         redisObject.lpush('IFLO_Y',str([Rx0[4], Rx1[4], Rx2[4], Rx3[4], Rx4[4], Rx5[4], Rx6[4]]))
 
         # Assign values for lfI, X and Y
+        antCount=0
         for i in range(0, 14, 2):
-            datum.lfI_X[i] = lf_Xfloat[i]
-            datum.lfI_Y[i] = lf_Yfloat[i]
+            datum.lfI_X[antCount] = lf_Xfloat[i]
+            datum.lfI_Y[antCount] = lf_Yfloat[i]
+            antCount+=1
 
         # Assign values for lfQ, X and Y
+        antCount=0
         for i in range(1, 14, 2):
-            datum.lfQ_X[i] = lf_Xfloat[i]
-            datum.lfQ_Y[i] = lf_Yfloat[i]
+            datum.lfQ_X[antCount] = lf_Xfloat[i]
+            datum.lfQ_Y[antCount] = lf_Yfloat[i]
+            antCount+=1
 
         # Create lists for ease of iteration
-        iflo_x_s = [Rx0_1, Rx1_1, Rx2_1, Rx3_1, Rx4_1, Rx5_1, Rx6_1]
-        iflo_y_s = [Rx0  , Rx1  , Rx2  , Rx3  , Rx4  , Rx5  , Rx6  ]
+        iflo_x_s = [Rx0_1[4], Rx1_1[4], Rx2_1[4], Rx3_1[4], Rx4_1[4], Rx5_1[4], Rx6_1[4]]
+        iflo_y_s = [Rx0[4]  , Rx1[4]  , Rx2[4]  , Rx3[4]  , Rx4[4]  , Rx5[4]  , Rx6[4]  ]
 
         # Assign values for iflo, x and y, for every antenna
         for i in range(0, 7):
             datum.antennas[i].iflo_x = iflo_x_s[i]
             datum.antennas[i].iflo_y = iflo_y_s[i]
+        datum.antennas[7].iflo_x=0.0
+        datum.antennas[7].iflo_y=0.0
 
         # insert the record into the DB
         datum.save()
