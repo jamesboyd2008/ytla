@@ -1,12 +1,13 @@
 #!/usr/bin/python3.6
 """
-This program seeds a database (DB) with data from the cosmos,
-written to text files,
-having been collected by the Yuan-Tseh Lee Array (ytla) radio telescope.
+This program seeds a database (DB) with data from text files.
+Some data are random.
+Some data are from the Yuan-Tseh Lee Array (ytla) radio telescope.
 """
 from Datum import Datum
 from Antenna_Snapshot import Antenna_Snapshot
 from mongoengine import *
+import random
 
 connect('ytla')
 
@@ -34,10 +35,11 @@ def main():
                 line = fp.readline().split("    ")
                 logSys_line_count += 1
             datum.timestamp = line[0]
-            datum.NTState = line[1]
-            datum.NTSelect = line[2]
-            datum.LOfreq = line[3]
-            datum.LOpower = line[4]
+            datum.nt_state = line[1]
+            datum.nt_select = line[2]
+            datum.lo_freq = float((line[3]).strip())
+            datum.lo_power = float((line[4]).strip())
+
 
         antennas = []
         # 7 antennas exist
@@ -45,7 +47,7 @@ def main():
         for antenna in range(0, 8):
             # initialize an Antenna_Snapshot object to contain all data specific to
             # a single antenna at a single moment.
-            antennas.append(Antenna_Snapshot())
+            datum.antennas.append(Antenna_Snapshot())
 
 # TODO: DRY this up
         filepath = 'logCorr_X'
@@ -60,11 +62,11 @@ def main():
                 line = fp.readline().split("    ")
                 logCorr_X_line_count += 1
             for antenna in range(0,7):
-                antennas[antenna].sel1X = line[2]
-                antennas[antenna].sel2X = line[3]
-                antennas[antenna].intswX = line[4]
-                antennas[antenna].hybrid_selX = line[5]
-                antennas[antenna].intLenX = float((line[6]).strip())
+                datum.antennas[antenna].sel1X = line[2]
+                datum.antennas[antenna].sel2X = line[3]
+                datum.antennas[antenna].intswX = line[4]
+                datum.antennas[antenna].hybrid_selX = line[5]
+                datum.antennas[antenna].intLenX = float((line[6]).strip())
                 line = fp.readline().split("    ")
                 logCorr_X_line_count += 1
 
@@ -81,11 +83,11 @@ def main():
                 logCorr_Y_line_count += 1
             # print(line)
             for antenna in range(0,7):
-                antennas[antenna].sel1Y = line[2]
-                antennas[antenna].sel2Y = line[3]
-                antennas[antenna].intswY = line[4]
-                antennas[antenna].hybrid_selY = line[5]
-                antennas[antenna].intLenY = float((line[6]).strip())
+                datum.antennas[antenna].sel1Y = line[2]
+                datum.antennas[antenna].sel2Y = line[3]
+                datum.antennas[antenna].intswY = line[4]
+                datum.antennas[antenna].hybrid_selY = line[5]
+                datum.antennas[antenna].intLenY = float((line[6]).strip())
                 line = fp.readline().split("    ")
                 logCorr_Y_line_count += 1
 
@@ -101,7 +103,7 @@ def main():
                 line = fp.readline().split("    ")
                 logIFLO_X_line_count += 1
             for antenna in range(1, 8):
-                antennas[antenna - 1].iflo_x = float((line[antenna]).strip())
+                datum.antennas[antenna - 1].iflo_x = float((line[antenna]).strip())
             logIFLO_X_line_count += 1
 
         filepath = 'logIFLO_Y'
@@ -116,10 +118,35 @@ def main():
                 line = fp.readline().split("    ")
                 logIFLO_Y_line_count += 1
             for antenna in range(1, 8):
-                antennas[antenna - 1].iflo_y = float((line[antenna]).strip())
+                datum.antennas[antenna - 1].iflo_y = float((line[antenna]).strip())
             logIFLO_Y_line_count += 1
 
-        datum.antennas = antennas # include the antenna data in the record
+        lf_Xfloat = []
+        lf_Yfloat = []
+        for x in range(14):
+            lf_Xfloat.append(random.randint(1 + 5 * x, 10 + 5 * x))
+            lf_Yfloat.append(random.randint(1 + 5 * x, 10 + 5 * x))
+
+        # Assign values for lfI, X and Y
+        antCount=0
+        for i in range(0, 14, 2):
+            # datum.lfI_X[antCount] = lf_Xfloat[i]
+            # datum.lfI_Y[antCount] = lf_Yfloat[i]
+            datum.antennas[antCount].lfI_X = lf_Xfloat[i]
+            datum.antennas[antCount].lfI_Y = lf_Yfloat[i]
+            antCount+=1
+
+        # Assign values for lfQ, X and Y
+        antCount=0
+        for i in range(1, 14, 2):
+            # datum.lfQ_X[antCount] = lf_Xfloat[i]
+            # datum.lfQ_Y[antCount] = lf_Yfloat[i]
+            datum.antennas[antCount].lfQ_X = lf_Xfloat[i]
+            datum.antennas[antCount].lfQ_Y = lf_Yfloat[i]
+            antCount+=1
+
+
+        # datum.antennas = antennas # include the antenna data in the record
 
         datum.save() # insert the record into the DB
 
