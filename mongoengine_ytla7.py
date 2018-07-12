@@ -351,15 +351,15 @@ while (1):
         # Assign values for lfI, X and Y
         antCount=0
         for i in range(0, 14, 2):
-            datum.lfI_X[antCount] = lf_Xfloat[i]
-            datum.lfI_Y[antCount] = lf_Yfloat[i]
+            datum.antennas[antCount].lfI_X = lf_Xfloat[i]
+            datum.antennas[antCount].lfI_Y = lf_Yfloat[i]
             antCount+=1
 
         # Assign values for lfQ, X and Y
         antCount=0
         for i in range(1, 14, 2):
-            datum.lfQ_X[antCount] = lf_Xfloat[i]
-            datum.lfQ_Y[antCount] = lf_Yfloat[i]
+            datum.antennas[antCount].lfQ_X = lf_Xfloat[i]
+            datum.antennas[antCount].lfQ_Y = lf_Yfloat[i]
             antCount+=1
 
         # Create lists for ease of iteration
@@ -370,8 +370,6 @@ while (1):
         for i in range(0, 7):
             datum.antennas[i].iflo_x = iflo_x_s[i]
             datum.antennas[i].iflo_y = iflo_y_s[i]
-        datum.antennas[7].iflo_x=0.0
-        datum.antennas[7].iflo_y=0.0
 
         # insert the record into the DB
         datum.save()
