@@ -15,15 +15,8 @@ class Datum(Document):
     timestamp = StringField() # from local machine
     nt_state = StringField() # also in logSys
     nt_select = StringField() # also in logSys
-    lo_freq = FloatField() # also in logSys
-    lo_power = FloatField() # also in logSys
+    lo_freq = FloatField(default=0.0) # also in logSys
+    lo_power = FloatField(default=0.0) # also in logSys
     # 0-6 Antenna_Snapshot objects plus lucky number 7
     antennas = ListField(EmbeddedDocumentField(Antenna_Snapshot))
-     # also in the logLF_X file
-    lfI_X = ListField(FloatField(), default=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0])
-     # also in the logLF_X file
-    lfQ_X = ListField(FloatField(), default=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0])
-     # also in the logLF_Y file
-    lfI_Y = ListField(FloatField(), default=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0])
-     # also in the logLF_Y file
-    lfQ_Y = ListField(FloatField(), default=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0])
+    
