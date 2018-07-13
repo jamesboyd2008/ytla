@@ -13,11 +13,11 @@ attributes = {
     'sel1Y': 'sel1Y', # ints, ~13-19, antenna specific                                done
     'sel2Y': 'sel2Y', # ints, ~13-19, antenna specific                                done
     'intswY': 'intswY', # CORRECT INTERRUPT, antenna specific
-    'hybrid_selY': 'hybrid_selY', # SRR NOT SELECTED, antenna specific
+    'hybrid_selY': 'hybrid_selY', # SRR NOT SELECTED, antenna specific                something
     'intLenY': 'intLenY', # 5.000, antenna specific                                   done
     'Timestamp': 'timestamp', # x value always, not antenna specific                  good enough, for now
-    'NTState': 'nt_state', # bool, not antenna specific
-    'NTSelect': 'nt_select', # bool, not antenna specific
+    'NTState': 'nt_state', # bool, not antenna specific                               done
+    'NTSelect': 'nt_select', # bool, not antenna specific                             done
     'LOfreq': 'lo_freq', # single boring float, usually, not antenna specific         done
     'LOpower': 'lo_power', # single boring float, usually, not antenna specific       done
     'lfI_X': 'lfI_X', # line_chart_per_antenna, these plot nicely as lines, antenna specific    done
