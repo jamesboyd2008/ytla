@@ -47,9 +47,7 @@ def tasks ():
 
 @app.route("/search", methods=['GET'])
 def search():
-    print("triggered 3")
     searchy()
-    print("triggered 1")
     return redirect('/')
 
 if __name__ == "__main__":
