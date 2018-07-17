@@ -19,4 +19,3 @@ class Datum(Document):
     lo_power = FloatField(default=0.0) # also in logSys
     # 0-6 Antenna_Snapshot objects plus lucky number 7
     antennas = ListField(EmbeddedDocumentField(Antenna_Snapshot))
-    
