@@ -3,7 +3,8 @@
 from search_imports import *
 
 def lone_gantt_chart_grapher(graph, title):
-
+    print(f"graph: {graph}")
+    print(f"title: {title}")
     colors = {}
     color_count = 0
     for color in graph.color_labels:
