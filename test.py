@@ -66,8 +66,8 @@ def search():
     end_str = request.values.get("end")
 
     # parse a string as a datetime.datetime
-    begin = datetime.strptime(begin_str, "%Y-%m-%d %H:%M:%S")
-    end = datetime.strptime(end_str, "%Y-%m-%d %H:%M:%S")
+    begin = datetime.strptime(begin_str, "%Y-%m-%d_%H:%M:%S")
+    end = datetime.strptime(end_str, "%Y-%m-%d_%H:%M:%S")
 
     attribute = request.values.get("refer")
 
@@ -100,7 +100,7 @@ def search():
         try:
             for datum in Datum.objects:
                 # parse a string (datum.timestamp) as a datetime.datetime
-                timestamp = datetime.strptime(datum.timestamp, "%Y-%m-%d %H:%M:%S")
+                timestamp = datetime.strptime(datum.timestamp, "%Y-%m-%d_%H:%M:%S")
                 # TODO: check the accuracy of these timestamps
                 if (timestamp >= begin) and (timestamp <= end):
                     x_values.append(datum.timestamp)
