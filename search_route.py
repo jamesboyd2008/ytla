@@ -18,7 +18,7 @@ def searchy():
         None
 
     Returns:
-        Nothing
+        NoneType
     """
 
     # assuming mongod is running on 'localhost' at port 27017
@@ -50,12 +50,16 @@ def searchy():
 
     # try to querry the DB, MongoEngine style
     try:
-        # TODO: make this variable something more sensible. What if the time range isn't that of the whole DB?
+        # TODO: make this loop something more sensible.
+        # What if the time range isn't that of the whole DB?
+        # Make this loop break before the end of the DB if the timestamps
+        # are too late, anyhow. ... or will this pattern break, later?
         for datum in Datum.objects:
-            # print("triggered here")
+            # This function is called for every element in the DB
             double_tuple = datum_helper(datum, double_tuple)
     except Exception as err:
         print(err)
+        # you can define more errors, here
 
     # plot the graph
     plotter(double_tuple)

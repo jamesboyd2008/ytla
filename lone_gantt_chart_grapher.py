@@ -1,10 +1,22 @@
-# This file defines the
+# This file defines the lone_gantt_chart_grapher function.
 
 from search_imports import *
 
 def lone_gantt_chart_grapher(graph, title):
+    """
+    This function generates and opens an HTML document containing a graph.
+
+    Parameters:
+        graph (Graph) : The data to be graphed.
+        title (str) : The title of the graph.
+
+    Returns:
+        NoneType
+    """
+
     print(f"graph: {graph}")
     print(f"title: {title}")
+
     colors = {}
     color_count = 0
     for color in graph.color_labels:

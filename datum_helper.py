@@ -27,6 +27,7 @@ def datum_helper(datum, double_tuple):
     timestamp = datetime.strptime(datum.timestamp, "%Y-%m-%d_%H:%M:%S")
 
     # TODO: check the accuracy of these timestamps
+    # TODO: make this go _just_ past the end, so as to save a DB scrape
     if (timestamp >= graph_meta_data['begin']) and (timestamp <= graph_meta_data['end']):
         if (graph_meta_data['attribute'] in gantt_chart_per_antenna):
             graph = gantt_chart_per_antenna_composer(datum, double_tuple)
@@ -42,5 +43,4 @@ def datum_helper(datum, double_tuple):
     graph_meta_data['data_count'] += 1 # TODO: this must be in the time range, not the DB
 
     double_tuple = (graph, graph_meta_data)
-
     return double_tuple

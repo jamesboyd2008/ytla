@@ -2,7 +2,7 @@
 # back ends.  Information comes here to decide where to go, next.
 
 from flask import Flask, render_template,request,redirect,url_for # For flask implementation
-from search_route import *
+from search_route import * # searchy() is from here
 
 app = Flask(__name__)
 # Bootstrap(app)

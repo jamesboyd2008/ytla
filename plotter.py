@@ -7,7 +7,6 @@ from lone_line_chart_grapher import lone_line_chart_grapher
 from gantt_chart_per_antenna_grapher import gantt_chart_per_antenna_grapher
 from lone_gantt_chart_grapher import lone_gantt_chart_grapher
 
-
 def plotter(double_tuple):
     """
     This function plots charts.
