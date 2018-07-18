@@ -19,52 +19,42 @@ def gantt_chart_per_antenna_composer(datum, double_tuple):
     graph = double_tuple[0]
     graph_meta_data = double_tuple[1]
 
-    # parse a string (datum.timestamp) as a datetime.datetime
-    timestamp = datetime.strptime(datum.timestamp, "%Y-%m-%d_%H:%M:%S")
+    # replace underscore for plotly processing
+    moment = datum.timestamp.replace('_', ' ')
 
     # if the list is empty, just append 8 dictionaries
-    if (not double_tuple[0]['attr_states']):
+    if (not graph.gantt_values_per_antenna[0]):
         for antenna in range(0, 8):
-            graph.attr_states.append(
+            graph.gantt_values_per_antenna[antenna].append(
                 dict(
-                    Task=f"Antenna {antenna}",
-                    Start=timestamp.strftime('%Y-%m-%d %H:%M:%S'),
-                    Finish='placeholder',
-                    Resource=f"{datum.antennas[antenna][attribute]}"
+                    Task = f"Antenna {antenna}",
+                    Start = moment,
+                    Finish = moment,
+                    Resource = f"{datum.antennas[antenna][graph_meta_data['attribute']]}"
                 )
             )
-        # Add the first label to be assigned a color
-        graph.color_labels.append(datum.antennas[-1][attribute])
-    # if it's not the last element in the collection
-    elif (graph_meta_data['data_count'] < graph_meta_data['data_quantity']):
+            # Add the color to the list of colors if it's not there, yet
+            if (datum.antennas[antenna][graph_meta_data['attribute']] not in graph.color_labels):
+                graph.color_labels.append(datum.antennas[antenna][graph_meta_data['attribute']])
+    # This isn't the first datum found within the time range.
+    else:
+        # for each of the 8 antennas
         for antenna in range(0, 8):
+            # Update the Finish time of the Tasks
+            graph.gantt_values_per_antenna[antenna][-1]['Finish'] = moment
             # if the color needs to change
-            if (graph.attr_states[-1 - (7 - antenna)]['Resource'] != datum.antennas[antenna][graph_meta_data['attribute']]):
-                # update the value of the 'Finish' key in the dict 8 elements prior
-                graph.attr_states[-1 - (7 - antenna)]['Finish'] = timestamp.strftime('%Y-%m-%d %H:%M:%S')
+            if (graph.gantt_values_per_antenna[antenna][-1]['Resource'] != datum.antennas[antenna][graph_meta_data['attribute']]):
                 # add a new dict with the new value for the 'Resource' key
-                graph.attr_states.append(
+                graph.gantt_values_per_antenna[antenna].append(
                     dict(
-                        Task=f"Antenna {antenna}",
-                        Start=timestamp.strftime('%Y-%m-%d %H:%M:%S'),
-                        Finish='placeholder',
-                        Resource=f"{datum.antennas[antenna][graph_meta_data['attribute']]}"
+                        Task = f"Antenna {antenna}",
+                        Start = moment,
+                        Finish = moment,
+                        Resource = f"{datum.antennas[antenna][graph_meta_data['attribute']]}"
                     )
                 )
+                # Add the color to the list of colors if it's not there, yet
                 if (datum.antennas[antenna][graph_meta_data['attribute']] not in graph.color_labels):
                     graph.color_labels.append(datum.antennas[antenna][graph_meta_data['attribute']])
-            else: # it's the same value as before
-                graph.attr_states.append(
-                    dict(
-                        Task=f"Antenna {antenna}",
-                        Start=timestamp.strftime('%Y-%m-%d %H:%M:%S'),
-                        Finish='placeholder',
-                        Resource=f"{datum.antennas[antenna][graph_meta_data['attribute']]}"
-                    )
-                )
-    # TODO: it's the last element and a different value
-    # TODO: it's the last element and a different value and no one has seen this value, yet
-    else: # it's the last element in the data set
-        graph.attr_states[-1]['Finish'] = timestamp.strftime('%Y-%m-%d %H:%M:%S')
 
     return graph
