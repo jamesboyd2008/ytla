@@ -46,26 +46,30 @@ logfileLF_X="/home/corr/ytla/logLF_X"
 logfileIFLO_Y="/home/corr/ytla/logIFLO_Y"
 logfileIFLO_X="/home/corr/ytla/logIFLO_X"
 
-sel1X=[None]*8
-sel2X=[None]*8
-hybrid_selX=[None]*8
+sel1X=[0]*8
+sel2X=[0]*8
+hybrid_selX=[0]*8
 hybrid_selValX=[None]*8
-intswX=[None]*8
+intswX=[0]*8
 intswValX=[None]*8
-acc_lenX=[None]*8
-intLenX=[None]*8
+acc_lenX=[0]*8
+intLenX=[0.0]*8
 
-sel1Y=[None]*8
-sel2Y=[None]*8
-hybrid_selY=[None]*8
+sel1Y=[0]*8
+sel2Y=[0]*8
+hybrid_selY=[0]*8
 hybrid_selValY=[None]*8
-intswY=[None]*8
+intswY=[0]*8
 intswValY=[None]*8
-acc_lenY=[None]*8
-intLenY=[None]*8
+acc_lenY=[0]*8
+intLenY=[0.0]*8
 
 lf_Y = [0.0] * 14
 lf_X = [0.0] * 14
+
+flag_x=0
+flag_y=0
+
 try:
     print 'Connecting...',
     cX = corr.corr_functions.Correlator(config_file=config_fileX,\
@@ -74,8 +78,10 @@ try:
     cX.connect()
     print 'done'
 
-except KeyboardInterrupt:
-    exit()
+except Exception:
+    print 'Error Connecting'
+    flag_x=1
+    pass
 
 try:
     print 'Connecting...',
@@ -85,8 +91,9 @@ try:
     cY.connect()
     print 'done'
 
-except KeyboardInterrupt:
-    exit()
+except Exception:
+    flag_y=1
+    pass
 
 jCorrX=0
 jCorrY=0
@@ -116,52 +123,53 @@ while (1):
         print timenow
         flogCorrX=open(logfileX,"a")
         i=0
-        for f, fpga in enumerate(cX.ffpgas):
-           if ant[i] == f:
-
-               #Read back Walsh
-
-               sel1X[i] = fpga.read_int('sel1')
-               sel2X[i] = fpga.read_int('sel2')
-               print 'Walsh for ADC0 is %i, Walsh for ADC1 is %i, for Ant%i \n' %(sel1X[i], sel2X[i], ant[i])
-
-               #Read back Interrupt value
-
-               intswX[i]=fpga.read_int('intsw')
-               if intswX[i] == 1:
-                  print 'Internal (CORRECT) interrupt selected for Ant%i \n' %(ant[i])
-                  intswValX[i]="CORRECT INTERRUPT"
-               elif intswX[i] == 0:
-                  print 'External (INCORRECT) interrupt selected for Ant%i \n' %(ant[i])
-                  intswValX[i]="INCORRECT INTERRUPT"
-               else:
-                  print 'There is an error in the setiing of this switch. Needs to be fixed'
-                  intswValX[i]="WRONG VALUE"
-
-               #Read back SRR table select value
-
-               hybrid_selX[i]=fpga.read_int('hybrid_sel')
-               if hybrid_selX[i] == 1:
-                  print 'SRR tables selected for Ant%i \n' %(ant[i])
-                  hybrid_selValX[i]="SRR selected"
-               elif hybrid_selX[i] == 0:
-                  print 'SRR tables NOT selected for Ant%i \n' %(ant[i])
-                  hybrid_selValX[i]="SRR NOT selected"
-               else:
-                  print 'There is an error in the setiing of this switch. Needs to be fixed'
-                  hybrid_selValX[i]="WRONG VALUE"
-               i +=1
-
-               #Read back Integration time
-
-        i=0
-        for x,fpga in enumerate(cX.xfpgas):
-               acc_lenX[i] = fpga.read_uint('acc_len')
-               intLenX[i]=dictInt.get(acc_lenX[i])
-               print 'Reading  acc_len  %i for X engine %i \n'%(acc_lenX[i],i)
-               print 'This integration length is %4.3f  for X engine %i\n'%(intLenX[i],i)
-               i +=1
-
+        if (flag_x == 0):
+          for f, fpga in enumerate(cX.ffpgas):
+             if ant[i] == f:
+  
+                 #Read back Walsh
+  
+                 sel1X[i] = fpga.read_int('sel1')
+                 sel2X[i] = fpga.read_int('sel2')
+                 print 'Walsh for ADC0 is %i, Walsh for ADC1 is %i, for Ant%i \n' %(sel1X[i], sel2X[i], ant[i])
+  
+                 #Read back Interrupt value
+  
+                 intswX[i]=fpga.read_int('intsw')
+                 if intswX[i] == 1:
+                    print 'Internal (CORRECT) interrupt selected for Ant%i \n' %(ant[i])
+                    intswValX[i]="CORRECT INTERRUPT"
+                 elif intswX[i] == 0:
+                    print 'External (INCORRECT) interrupt selected for Ant%i \n' %(ant[i])
+                    intswValX[i]="INCORRECT INTERRUPT"
+                 else:
+                    print 'There is an error in the setiing of this switch. Needs to be fixed'
+                    intswValX[i]="WRONG VALUE"
+  
+                 #Read back SRR table select value
+  
+                 hybrid_selX[i]=fpga.read_int('hybrid_sel')
+                 if hybrid_selX[i] == 1:
+                    print 'SRR tables selected for Ant%i \n' %(ant[i])
+                    hybrid_selValX[i]="SRR selected"
+                 elif hybrid_selX[i] == 0:
+                    print 'SRR tables NOT selected for Ant%i \n' %(ant[i])
+                    hybrid_selValX[i]="SRR NOT selected"
+                 else:
+                    print 'There is an error in the setiing of this switch. Needs to be fixed'
+                    hybrid_selValX[i]="WRONG VALUE"
+                 i +=1
+  
+                 #Read back Integration time
+  
+          i=0
+          for x,fpga in enumerate(cX.xfpgas):
+                 acc_lenX[i] = fpga.read_uint('acc_len')
+                 intLenX[i]=dictInt.get(acc_lenX[i])
+                 print 'Reading  acc_len  %i for X engine %i \n'%(acc_lenX[i],i)
+                 print 'This integration length is %4.3f  for X engine %i\n'%(intLenX[i],i)
+                 i +=1
+  
         redisObject.lpush('sel1X',str(sel1X))
         redisObject.lpush('sel2X',str(sel2X))
         redisObject.lpush('intswX',str(intswValX))
@@ -187,52 +195,53 @@ while (1):
         flogCorrX.close()
 
         i=0
-        for f, fpga in enumerate(cY.ffpgas):
-           flogCorrY=open(logfileY,"a")
-           if ant[i] == f:
-
-               #Read back Walsh
-
-               sel1Y[i] = fpga.read_int('sel1')
-               sel2Y[i] = fpga.read_int('sel2')
-               print 'Walsh for ADC0 is %i, Walsh for ADC1 is %i, for Ant%i \n' %(sel1Y[i], sel2Y[i], ant[i])
-
-               #Read back Interrupt value
-
-               intswY[i]=fpga.read_int('intsw')
-               if intswY[i] == 1:
-                  print 'Internal (CORRECT) interrupt selected for Ant%i \n' %(ant[i])
-                  intswValY[i]="CORRECT INTERRUPT"
-               elif intswY[i] == 0:
-                  print 'External (INCORRECT) interrupt selected for Ant%i \n' %(ant[i])
-                  intswValY[i]="INCORRECT INTERRUPT"
-               else:
-                  print 'There is an error in the setiing of this switch. Needs to be fixed'
-                  intswValY[i]="WRONG VALUE"
-
-               #Read back SRR table select value
-
-               hybrid_selY[i]=fpga.read_int('hybrid_sel')
-               if hybrid_selY[i] == 1:
-                  print 'SRR tables selected for Ant%i \n' %(ant[i])
-                  hybrid_selValY[i]="SRR selected"
-               elif hybrid_selY[i] == 0:
-                  print 'SRR tables NOT selected for Ant%i \n' %(ant[i])
-                  hybrid_selValY[i]="SRR NOT selected"
-               else:
-                  print 'There is an error in the setiing of this switch. Needs to be fixed'
-                  hybrid_selValY[i]="WRONG VALUE"
-               i +=1
-
-               #Read back Integration time
-
-        i=0
-        for x,fpga in enumerate(cY.xfpgas):
-                      acc_lenY[i] = fpga.read_uint('acc_len')
-                      intLenY[i]=dictInt.get(acc_lenY[i])
-                      print 'Reading  acc_len  %i for X engine %i \n'%(acc_lenY[i],i)
-                      print 'This integration length is %4.3f  for X engine %i\n'%(intLenY[i],i)
-                      i +=1
+        flogCorrY=open(logfileY,"a")
+        if (flag_y == 0):
+          for f, fpga in enumerate(cY.ffpgas):
+             if ant[i] == f:
+  
+                 #Read back Walsh
+  
+                 sel1Y[i] = fpga.read_int('sel1')
+                 sel2Y[i] = fpga.read_int('sel2')
+                 print 'Walsh for ADC0 is %i, Walsh for ADC1 is %i, for Ant%i \n' %(sel1Y[i], sel2Y[i], ant[i])
+  
+                 #Read back Interrupt value
+  
+                 intswY[i]=fpga.read_int('intsw')
+                 if intswY[i] == 1:
+                    print 'Internal (CORRECT) interrupt selected for Ant%i \n' %(ant[i])
+                    intswValY[i]="CORRECT INTERRUPT"
+                 elif intswY[i] == 0:
+                    print 'External (INCORRECT) interrupt selected for Ant%i \n' %(ant[i])
+                    intswValY[i]="INCORRECT INTERRUPT"
+                 else:
+                    print 'There is an error in the setiing of this switch. Needs to be fixed'
+                    intswValY[i]="WRONG VALUE"
+  
+                 #Read back SRR table select value
+  
+                 hybrid_selY[i]=fpga.read_int('hybrid_sel')
+                 if hybrid_selY[i] == 1:
+                    print 'SRR tables selected for Ant%i \n' %(ant[i])
+                    hybrid_selValY[i]="SRR selected"
+                 elif hybrid_selY[i] == 0:
+                    print 'SRR tables NOT selected for Ant%i \n' %(ant[i])
+                    hybrid_selValY[i]="SRR NOT selected"
+                 else:
+                    print 'There is an error in the setiing of this switch. Needs to be fixed'
+                    hybrid_selValY[i]="WRONG VALUE"
+                 i +=1
+  
+                 #Read back Integration time
+  
+          i=0
+          for x,fpga in enumerate(cY.xfpgas):
+                        acc_lenY[i] = fpga.read_uint('acc_len')
+                        intLenY[i]=dictInt.get(acc_lenY[i])
+                        print 'Reading  acc_len  %i for X engine %i \n'%(acc_lenY[i],i)
+                        print 'This integration length is %4.3f  for X engine %i\n'%(intLenY[i],i)
+                        i +=1
 
 
         redisObject.lpush('sel1Y',str(sel1Y))
@@ -322,11 +331,11 @@ while (1):
         try:
           Rx0, Rx1, Rx2, Rx3, Rx4, Rx5, Rx6 = numpy.loadtxt('/var/www/cgi-bin/aifileY', usecols=(0, 1 ,2 ,3, 4, 5, 6), unpack=False)
         except ValueError:
-          Rx0, Rx1, Rx2, Rx3, Rx4, Rx5, Rx6 = [0.0] * 7
+          Rx0, Rx1, Rx2, Rx3, Rx4, Rx5, Rx6 =[[0.0] * 7 for i in range(7)]
         try:
           Rx0_1, Rx1_1, Rx2_1, Rx3_1, Rx4_1, Rx5_1, Rx6_1 = numpy.loadtxt('/var/www/cgi-bin/aifileX', usecols=(0, 1 ,2 ,3, 4, 5, 6), unpack=False)
         except ValueError:
-          Rx0_1, Rx1_1, Rx2_1, Rx3_1, Rx4_1, Rx5_1, Rx6_1 = [0.0] * 7
+          Rx0_1, Rx1_1, Rx2_1, Rx3_1, Rx4_1, Rx5_1, Rx6_1 =[[0.0] * 7 for i in range(7)]
         i=0
         for line in fh_Y:
           lf_Y[i]=line.rstrip('\n')
@@ -354,6 +363,8 @@ while (1):
             datum.antennas[antCount].lfI_X = lf_Xfloat[i]
             datum.antennas[antCount].lfI_Y = lf_Yfloat[i]
             antCount+=1
+        datum.antennas[7].lfI_X=0.0
+        datum.antennas[7].lfI_Y=0.0
 
         # Assign values for lfQ, X and Y
         antCount=0
@@ -361,6 +372,8 @@ while (1):
             datum.antennas[antCount].lfQ_X = lf_Xfloat[i]
             datum.antennas[antCount].lfQ_Y = lf_Yfloat[i]
             antCount+=1
+        datum.antennas[7].lfQ_X=0.0
+        datum.antennas[7].lfQ_Y=0.0
 
         # Create lists for ease of iteration
         iflo_x_s = [Rx0_1[4], Rx1_1[4], Rx2_1[4], Rx3_1[4], Rx4_1[4], Rx5_1[4], Rx6_1[4]]
@@ -370,6 +383,8 @@ while (1):
         for i in range(0, 7):
             datum.antennas[i].iflo_x = iflo_x_s[i]
             datum.antennas[i].iflo_y = iflo_y_s[i]
+        datum.antennas[7].iflo_x=0.0
+        datum.antennas[7].iflo_y=0.0
 
         # insert the record into the DB
         datum.save()
