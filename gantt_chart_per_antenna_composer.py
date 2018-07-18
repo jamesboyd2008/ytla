@@ -22,8 +22,12 @@ def gantt_chart_per_antenna_composer(datum, double_tuple):
     # replace underscore for plotly processing
     moment = datum.timestamp.replace('_', ' ')
 
-    # if the list is empty, just append 8 dictionaries
+    # Check whether the lists with the list are empty.
+    #     i.e. ---> [ [], [], [], [], [], [], [], [] ]
+    # This is grounds for assuming that datum is the first element in the DB
+    # found to be within the time range, for this query.
     if (not graph.gantt_values_per_antenna[0]):
+        # Append a dict to every list in gantt_values_per_antenna
         for antenna in range(0, 8):
             graph.gantt_values_per_antenna[antenna].append(
                 dict(
