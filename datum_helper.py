@@ -28,6 +28,9 @@ def datum_helper(datum, double_tuple):
 
     # TODO: check the accuracy of these timestamps
     # TODO: make this go _just_ past the end, so as to save a DB scrape
+
+    # Check whether the element of consideration is within the time range of 
+    # interest.
     if (timestamp >= graph_meta_data['begin']) and (timestamp <= graph_meta_data['end']):
         if (graph_meta_data['attribute'] in gantt_chart_per_antenna):
             graph = gantt_chart_per_antenna_composer(datum, double_tuple)
