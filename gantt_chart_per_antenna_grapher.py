@@ -23,6 +23,9 @@ def gantt_chart_per_antenna_grapher(graph, title):
         colors[label] = rgb_colors[color_count]
         color_count += 1
 
+    # Make dummy data bars grey.
+    colors['dummy data'] = 'rgb(128, 128, 128)' # gray
+
     # Process the 2D array of gantt_values_per_antenna for graphing
     for antenna in graph.gantt_values_per_antenna:
         for entry in antenna:
