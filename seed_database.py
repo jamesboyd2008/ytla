@@ -1,9 +1,9 @@
 #!/usr/bin/python3.6
-"""
-This program seeds a database (DB) with data from text files.
-Some data are random.
-Some data are from the Yuan-Tseh Lee Array (ytla) radio telescope.
-"""
+
+# This program seeds a database (DB) with data from text files.
+# Some data are random.
+# Some data are from the Yuan-Tseh Lee Array (ytla) radio telescope.
+
 from Datum import Datum
 from Antenna_Snapshot import Antenna_Snapshot
 from mongoengine import *
@@ -130,8 +130,6 @@ def main():
         # Assign values for lfI, X and Y
         antCount=0
         for i in range(0, 14, 2):
-            # datum.lfI_X[antCount] = lf_Xfloat[i]
-            # datum.lfI_Y[antCount] = lf_Yfloat[i]
             datum.antennas[antCount].lfI_X = lf_Xfloat[i]
             datum.antennas[antCount].lfI_Y = lf_Yfloat[i]
             antCount+=1
@@ -139,18 +137,12 @@ def main():
         # Assign values for lfQ, X and Y
         antCount=0
         for i in range(1, 14, 2):
-            # datum.lfQ_X[antCount] = lf_Xfloat[i]
-            # datum.lfQ_Y[antCount] = lf_Yfloat[i]
             datum.antennas[antCount].lfQ_X = lf_Xfloat[i]
             datum.antennas[antCount].lfQ_Y = lf_Yfloat[i]
             antCount+=1
 
-
-        # datum.antennas = antennas # include the antenna data in the record
-
         datum.save() # insert the record into the DB
 
-# time.sleep(2)
 if __name__ == '__main__':
     main()
     print("it may have worked")
