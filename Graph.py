@@ -12,7 +12,7 @@ class Graph:
         # For antenna-agnostic data that will be represented by a single line chart
         self.lone_y_values = []
         # For antenna-specific data that will be represented by a multi-bar
-        # gantt chart, such as hybrid_selY
+        # gantt chart, such as hybrid_selValY
         self.gantt_values_per_antenna = [ [], [], [], [], [], [], [], [] ]
         # For antenna-agnostic data that will be represented with a gantt chart
         self.attr_states = []

@@ -65,7 +65,7 @@ def main():
                 datum.antennas[antenna].sel1X = line[2]
                 datum.antennas[antenna].sel2X = line[3]
                 datum.antennas[antenna].intswX = line[4]
-                datum.antennas[antenna].hybrid_selX = line[5]
+                datum.antennas[antenna].hybrid_selValX = line[5]
                 datum.antennas[antenna].intLenX = float((line[6]).strip())
                 line = fp.readline().split("    ")
                 logCorr_X_line_count += 1
@@ -86,7 +86,7 @@ def main():
                 datum.antennas[antenna].sel1Y = line[2]
                 datum.antennas[antenna].sel2Y = line[3]
                 datum.antennas[antenna].intswY = line[4]
-                datum.antennas[antenna].hybrid_selY = line[5]
+                datum.antennas[antenna].hybrid_selValY = line[5]
                 datum.antennas[antenna].intLenY = float((line[6]).strip())
                 line = fp.readline().split("    ")
                 logCorr_Y_line_count += 1

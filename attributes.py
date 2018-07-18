@@ -6,12 +6,12 @@ attributes = {
     'sel1X': 'sel1X', # ints, 0-6, antenna specific
     'sel2X': 'sel2X', # ints, 0-6, antenna specific
     'intswX': 'intswX', # str, e.g. CORRECT INTERRUPT, antenna specific
-    'hybrid_selX': 'hybrid_selX', # str, e.g. SRR selected, antenna specific
+    'hybrid_selValX': 'hybrid_selValX', # str, e.g. SRR selected, antenna specific
     'intLenX': 'intLenX', # float, e.g. 5.000, antenna specific
     'sel1Y': 'sel1Y', # ints, e.g. ~13-19, antenna specific
     'sel2Y': 'sel2Y', # ints, e.g. ~13-19, antenna specific
     'intswY': 'intswY', # str, e.g. CORRECT INTERRUPT, antenna specific
-    'hybrid_selY': 'hybrid_selY', # str, e.g. SRR NOT SELECTED, antenna specific
+    'hybrid_selValY': 'hybrid_selValY', # str, e.g. SRR NOT SELECTED, antenna specific
     'intLenY': 'intLenY', # float, e.g. 5.000, antenna specific
     'Timestamp': 'timestamp', # str, x value always, not antenna specific
     'NTState': 'nt_state', # str, not antenna specific
