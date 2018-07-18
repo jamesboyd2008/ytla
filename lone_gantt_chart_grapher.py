@@ -14,31 +14,30 @@ def lone_gantt_chart_grapher(graph, title):
         NoneType
     """
 
-    print(f"graph: {graph}")
-    print(f"title: {title}")
-
+    # A dict to map labels to their corresponding colors
     colors = {}
+    # A counter variable for list element reference by index
     color_count = 0
-    for color in graph.color_labels:
-        colors[color] = rgb_colors[color_count]
+    # Iterate over all the labels, assigning each a color
+    for label in graph.color_labels:
+        colors[label] = rgb_colors[color_count]
         color_count += 1
 
+    # Use plotly's figure factory, ff, to almost display a gantt chart
     graph.data_gettin_visualized = ff.create_gantt(
         graph.attr_states,
-        colors=colors,
-        index_col='Resource',
-        show_colorbar=True,
-        group_tasks=True
+        colors = colors,
+        group_tasks = True,
+        index_col = 'Resource',
+        show_colorbar = True,
+        title = title
     )
 
+    # Display the gantt chart
     plotly.offline.plot(
         graph.data_gettin_visualized,
-        filename=r"visualization.html",
-        auto_open=True
+        filename = r"visualization.html",
+        auto_open = True
     )
-# finally:
+
     # TODO: zero plotly data corner case
-    # try to delete the old graph, somehow
-# finally:
-    # del graph
-# print(f"len(graph.y_values_per_antenna[0]): { len( graph.y_values_per_antenna[0] ) }")
