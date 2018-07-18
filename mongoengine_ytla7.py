@@ -360,16 +360,20 @@ while (1):
         # Assign values for lfI, X and Y
         antCount=0
         for i in range(0, 14, 2):
-            datum.lfI_X[antCount] = lf_Xfloat[i]
-            datum.lfI_Y[antCount] = lf_Yfloat[i]
+            datum.antennas[antCount].lfI_X = lf_Xfloat[i]
+            datum.antennas[antCount].lfI_Y = lf_Yfloat[i]
             antCount+=1
+        datum.antennas[7].lfI_X=0.0
+        datum.antennas[7].lfI_Y=0.0
 
         # Assign values for lfQ, X and Y
         antCount=0
         for i in range(1, 14, 2):
-            datum.lfQ_X[antCount] = lf_Xfloat[i]
-            datum.lfQ_Y[antCount] = lf_Yfloat[i]
+            datum.antennas[antCount].lfQ_X = lf_Xfloat[i]
+            datum.antennas[antCount].lfQ_Y = lf_Yfloat[i]
             antCount+=1
+        datum.antennas[7].lfQ_X=0.0
+        datum.antennas[7].lfQ_Y=0.0
 
         # Create lists for ease of iteration
         iflo_x_s = [Rx0_1[4], Rx1_1[4], Rx2_1[4], Rx3_1[4], Rx4_1[4], Rx5_1[4], Rx6_1[4]]

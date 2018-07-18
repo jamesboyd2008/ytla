@@ -18,4 +18,6 @@ To visualize the data:
 14. mod_wsgi-express start-server mod_wsgi_interface.py &
 15. navigate to localhost:8000 in your favorite web browser
 
+? numpy ?
+
 #	tadekawa
