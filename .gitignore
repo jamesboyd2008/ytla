@@ -5,3 +5,6 @@ visualization.html
 
 # ploty generated helper html
 gantt-group-tasks-together.html
+
+# node modules
+/node_modules
