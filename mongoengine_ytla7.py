@@ -4,7 +4,7 @@ import corr, numpy,sys,os,time,logging
 
 
 if __name__ == '__main__':
-    from optparse import OptionParser 
+    from optparse import OptionParser
     import subprocess
     from subprocess import *
     from datetime import datetime
@@ -126,15 +126,15 @@ while (1):
         if (flag_x == 0):
           for f, fpga in enumerate(cX.ffpgas):
              if ant[i] == f:
-  
+
                  #Read back Walsh
-  
+
                  sel1X[i] = fpga.read_int('sel1')
                  sel2X[i] = fpga.read_int('sel2')
                  print 'Walsh for ADC0 is %i, Walsh for ADC1 is %i, for Ant%i \n' %(sel1X[i], sel2X[i], ant[i])
-  
+
                  #Read back Interrupt value
-  
+
                  intswX[i]=fpga.read_int('intsw')
                  if intswX[i] == 1:
                     print 'Internal (CORRECT) interrupt selected for Ant%i \n' %(ant[i])
@@ -145,9 +145,9 @@ while (1):
                  else:
                     print 'There is an error in the setiing of this switch. Needs to be fixed'
                     intswValX[i]="WRONG VALUE"
-  
+
                  #Read back SRR table select value
-  
+
                  hybrid_selX[i]=fpga.read_int('hybrid_sel')
                  if hybrid_selX[i] == 1:
                     print 'SRR tables selected for Ant%i \n' %(ant[i])
@@ -159,9 +159,9 @@ while (1):
                     print 'There is an error in the setiing of this switch. Needs to be fixed'
                     hybrid_selValX[i]="WRONG VALUE"
                  i +=1
-  
+
                  #Read back Integration time
-  
+
           i=0
           for x,fpga in enumerate(cX.xfpgas):
                  acc_lenX[i] = fpga.read_uint('acc_len')
@@ -169,7 +169,7 @@ while (1):
                  print 'Reading  acc_len  %i for X engine %i \n'%(acc_lenX[i],i)
                  print 'This integration length is %4.3f  for X engine %i\n'%(intLenX[i],i)
                  i +=1
-  
+
         redisObject.lpush('sel1X',str(sel1X))
         redisObject.lpush('sel2X',str(sel2X))
         redisObject.lpush('intswX',str(intswValX))
@@ -181,7 +181,7 @@ while (1):
             datum.antennas[i].sel1X = sel1X[i]
             datum.antennas[i].sel2X = sel2X[i]
             datum.antennas[i].intswX = intswValX[i]
-            datum.antennas[i].hybrid_selX = hybrid_selValX[i]
+            datum.antennas[i].hybrid_selValX = hybrid_selValX[i]
             datum.antennas[i].intLenX = intLenX[i]
 
         if (jCorrX == 0):
@@ -199,15 +199,15 @@ while (1):
         if (flag_y == 0):
           for f, fpga in enumerate(cY.ffpgas):
              if ant[i] == f:
-  
+
                  #Read back Walsh
-  
+
                  sel1Y[i] = fpga.read_int('sel1')
                  sel2Y[i] = fpga.read_int('sel2')
                  print 'Walsh for ADC0 is %i, Walsh for ADC1 is %i, for Ant%i \n' %(sel1Y[i], sel2Y[i], ant[i])
-  
+
                  #Read back Interrupt value
-  
+
                  intswY[i]=fpga.read_int('intsw')
                  if intswY[i] == 1:
                     print 'Internal (CORRECT) interrupt selected for Ant%i \n' %(ant[i])
@@ -218,9 +218,9 @@ while (1):
                  else:
                     print 'There is an error in the setiing of this switch. Needs to be fixed'
                     intswValY[i]="WRONG VALUE"
-  
+
                  #Read back SRR table select value
-  
+
                  hybrid_selY[i]=fpga.read_int('hybrid_sel')
                  if hybrid_selY[i] == 1:
                     print 'SRR tables selected for Ant%i \n' %(ant[i])
@@ -232,9 +232,9 @@ while (1):
                     print 'There is an error in the setiing of this switch. Needs to be fixed'
                     hybrid_selValY[i]="WRONG VALUE"
                  i +=1
-  
+
                  #Read back Integration time
-  
+
           i=0
           for x,fpga in enumerate(cY.xfpgas):
                         acc_lenY[i] = fpga.read_uint('acc_len')
@@ -255,7 +255,7 @@ while (1):
             datum.antennas[i].sel1Y = sel1Y[i]
             datum.antennas[i].sel2Y = sel2Y[i]
             datum.antennas[i].intswY = intswValY[i]
-            datum.antennas[i].hybrid_selY = hybrid_selValY[i]
+            datum.antennas[i].hybrid_selValY = hybrid_selValY[i]
             datum.antennas[i].intLenY = intLenY[i]
 
         if (jCorrY == 0):
