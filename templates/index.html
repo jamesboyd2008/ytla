@@ -3,11 +3,11 @@
 <html>
 	<head>
 		<title>{{t}}</title>
-		<!-- href="/static/assets/style.css"-->
+		<!-- href="/static/assets/style.css" -->
 		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/style.css')}}" >
 		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/emoji.css')}}" >
-		<!-- <link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/bootsrap.css')}}" > -->
-		<!-- <link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/bootsrap-grid.css')}}" > -->
+		<!-- <link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/bootstrap.css')}}" >
+		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/bootstrap-grid.css')}}" > -->
 		<script src="{{ url_for('static',filename='assets/js/twemoji.min.js')}}"></script>
 		<script src="{{ url_for('static',filename='assets/js/emoji.js')}}"></script>
 		<!-- <script src="{{ url_for('static',filename='assets/js/bootstrap.js')}}"></script> -->
@@ -26,6 +26,7 @@
 				<option value={{ attr }}>{{ attr }}</option>
 			{% endfor %}
 		</select></td>
+        <!-- pickup here: update these two date pickers -->
 		<td><input type="text" name="begin" placeholder="begin" size="15" /></td>
 		<td><input type="text" name="end" placeholder="end" size="15" /></td>
 		<td><button type="submit">Search</button></td>
