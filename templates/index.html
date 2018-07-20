@@ -1,17 +1,23 @@
 
 
 <html>
-	<head>
-		<title>{{t}}</title>
-		<!-- href="/static/assets/style.css" -->
-		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/style.css')}}" >
-		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/emoji.css')}}" >
-		<!-- <link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/bootstrap.css')}}" >
-		<link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/bootstrap-grid.css')}}" > -->
-		<script src="{{ url_for('static',filename='assets/js/twemoji.min.js')}}"></script>
-		<script src="{{ url_for('static',filename='assets/js/emoji.js')}}"></script>
-		<!-- <script src="{{ url_for('static',filename='assets/js/bootstrap.js')}}"></script> -->
-	</head>
+    <head>
+        <title>{{t}}</title>
+        <!-- href="/static/assets/style.css" -->
+        <link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/style.css')}}" >
+        <link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/emoji.css')}}" >
+        <link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/bootstrap.css')}}" >
+        <link rel="stylesheet" type="text/css"  href="{{ url_for('static',filename='assets/css/bootstrap-grid.css')}}" >
+        <script src="{{ url_for('static',filename='assets/js/twemoji.min.js')}}"></script>
+        <script src="{{ url_for('static',filename='assets/js/emoji.js')}}"></script>
+
+        <script type="text/javascript" src="../static/assets/js/jquery.js"></script>
+        <script type="text/javascript" src="../static/assets/js/moment.js }}"></script>
+        <script type="text/javascript" src="../static/assets/js/bootstrap.min.js')}}"></script>
+        <script type="text/javascript" src="../static/assets/js/bootstrap-datetimepicker.min.js }}"></script>
+
+
+    </head>
 <body>
 	<h1>{{ h }}</h1>
 	<hr>
@@ -19,23 +25,36 @@
 	<form action="/search"	method="GET" >
 		<table class="none" id="close">
 		<tr>
-		<td></td><td></td>
-		<td><big><b>YTLA Data:</b></big></td>
-		<td><select name="refer" required>
-			{% for attr in butes %}
-				<option value={{ attr }}>{{ attr }}</option>
-			{% endfor %}
-		</select></td>
-        <!-- pickup here: update these two date pickers -->
-		<td><input type="text" name="begin" placeholder="begin" size="15" /></td>
-		<td><input type="text" name="end" placeholder="end" size="15" /></td>
-		<td><button type="submit">Search</button></td>
+    		<td></td><td></td>
+    		<td><big><b>YTLA Data:</b></big></td>
+    		<td><select name="refer" required>
+    			{% for attr in butes %}
+    				<option value={{ attr }}>{{ attr }}</option>
+    			{% endfor %}
+    		</select></td>
+            <!-- pickup here: implement this datepicker http://eonasdan.github.io/bootstrap-datetimepicker/Installing/ -->
+    		<td><input type="text" name="begin" placeholder="begin" size="15" /></td>
+    		<td><input type="text" name="end" placeholder="end" size="15" /></td>
+    		<td><button type="submit">Search</button></td>
 		</tr>
 		</table>
 	</form>
 	</div>
 
-	<hr>
+    <hr>
+
+    <div class="container">
+        <div class="row">
+            <div class='col-sm-6'>
+                <input type='text' class="form-control" id='datetimepicker4' />
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    $('#datetimepicker4').datetimepicker();
+                });
+            </script>
+        </div>
+    </div>
 
 	<script>
 
