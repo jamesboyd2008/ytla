@@ -8,26 +8,44 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+Install [Anaconda](https://docs.anaconda.com/anaconda/install/).
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+Create an environment
 
 ```
-Give the example
+conda create --name ytla
 ```
 
-And repeat
+Activate that environment
 
 ```
-until finished
+source activate ytla
+```
+
+Install dependencies:
+
+```
+conda install --yes --file requirements.txt
+```
+
+In the likely event that you want to run this program with simulated data, you'll want to run a MongoDB server, locally (perhaps in another terminal tab):
+
+```
+sudo mongod
+```
+
+Seed the database:
+
+```
+python seed_database.py
+```
+
+Run the application:
+
+```
+python test.py
 ```
 
 End with an example of getting some data out of the system or using it for a little demo
@@ -65,8 +83,9 @@ You must SSH into the server on Mauna Loa to connect to the DB.
 ## Authors
 
 * **Billie Thompson** - *README template author* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Eonasdan** - *Creator of datetimepicker* - [Eonasdan](https://github.com/eonasdan)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/jamesboyd2008/ytla/contributors) who participated in this project.
 
 ## License
 
@@ -74,4 +93,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Mahalo to Ranjani
+Mahalo to all the following for making this project possible:
+
+* [Akamai Workforce Initiave](https://akamaihawaii.org/)
+* [TMT]()
+* funders
