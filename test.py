@@ -4,8 +4,17 @@
 from flask import Flask, render_template,request,redirect,url_for # For flask implementation
 from search_route import * # searchy() is from here
 
+from flask_bootstrap import Bootstrap
+# from flask_wtf import FlaskForm
+# from flask_wtf.file import FileField
+# from pymongo import MongoClient # Database connector
+# from wtforms import TextField, HiddenField, ValidationError, RadioField,\
+    # BooleanField, SubmitField, IntegerField, FormField, validators
+# from wtforms.validators import Required
+
+
 app = Flask(__name__)
-# Bootstrap(app)
+Bootstrap(app)
 title = "YTLA Data"
 headig = "YTLA Data"
 
