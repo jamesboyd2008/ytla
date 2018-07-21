@@ -84,6 +84,7 @@ You must SSH into the server on Mauna Loa to connect to the DB.
 
 * **Billie Thompson** - *README template author* - [PurpleBooth](https://github.com/PurpleBooth)
 * **Eonasdan** - *Creator of datetimepicker* - [Eonasdan](https://github.com/eonasdan)
+* **Marc Brinkman** - *Flask-Bootstrap* - [Marc Brinkman](https://github.com/mbr/flask-bootstrap)
 
 See also the list of [contributors](https://github.com/jamesboyd2008/ytla/contributors) who participated in this project.
 
