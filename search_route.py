@@ -5,8 +5,7 @@ from search_imports import *
 from datum_helper import *
 from plotter import plotter
 
-# TODO: "What kind of a searcher gets nothing and returns nothing?"
-def searchy():
+def searchy(begin, end, refer):
     """
     This function searches the DB.
 
@@ -15,7 +14,9 @@ def searchy():
     a range of timestamps.
 
     Parameters:
-        None
+        begin (str) : The beginning of the time range of interest.
+        end (str) : The end of the time range of interest.
+        refer (str) : The attribute of interest, e.g., sel1x
 
     Returns:
         NoneType
@@ -26,16 +27,13 @@ def searchy():
     connect('ytla')
 
     graph_meta_data = {
-        # parse a string as a datetime.datetime
         # The user provided "begin", the beginning of the time range of interest
         # strptime() --> string parsed to a struct_time object
-        'begin': datetime.strptime(request.values.get("begin"), "%Y-%m-%d_%H:%M:%S"),
+        'begin': datetime.strptime(begin, "%m/%d/%Y %H:%M"), # 01/23/2019 12:27 PM
         # The user provided "end", the ending of the time range of interest
-        'end': datetime.strptime(request.values.get("end"), "%Y-%m-%d_%H:%M:%S"),
+        'end': datetime.strptime(end, "%m/%d/%Y %H:%M"),
         # The user's choice from the dropdown
-        'attribute_name': request.values.get("refer"),
-        # The datum value corresponding to the user's choice from the dropdown
-        'attribute': attributes[request.values.get("refer")],
+        'attribute': refer,
         # the number of Datum objects in the DB
         'data_quantity': len(Datum.objects),
         # a counter, representing the number of Datum objects
