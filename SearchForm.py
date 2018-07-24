@@ -2,8 +2,7 @@
 
 from flask import Flask
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, validators, DateField,  SelectField
-from wtforms.validators import Required
+from wtforms import SubmitField, DateField, SelectField, validators
 
 class SearchForm(FlaskForm):
     """
@@ -51,8 +50,16 @@ class SearchForm(FlaskForm):
     )
 
     # datetimepicker http://eonasdan.github.io/bootstrap-datetimepicker/
-    begin = DateField(id='begin_dtpicker', label='From:')
-    end = DateField(id='end_dtpicker', label='Until:')
+    begin = DateField(
+        id = 'begin_dtpicker',
+        label = 'From:',
+        validators = [ validators.DataRequired() ]
+    )
+    end = DateField(
+        id = 'end_dtpicker',
+        label = 'Until:',
+        validators = [ validators.DataRequired() ]
+    )
 
     # Search button
     submit_button = SubmitField('Search')
