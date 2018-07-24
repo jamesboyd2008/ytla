@@ -14,6 +14,7 @@ class SearchForm(FlaskForm):
     x_pol = SelectField(
         label='X Pol Parameters',
         choices=[
+            ('', ''),
             ('sel1X', 'sel1X'),
             ('sel2X', 'sel2X'),
             ('intswX', 'intswX'),
@@ -27,6 +28,7 @@ class SearchForm(FlaskForm):
     y_pol = SelectField(
         label='Y Pol Parameters',
         choices=[
+            ('', ''),
             ('sel1Y', 'sel1Y'),
             ('sel2Y', 'sel2Y'),
             ('intswY', 'intswY'),
@@ -40,6 +42,7 @@ class SearchForm(FlaskForm):
     gen_sys = SelectField(
         label='General System Parameters',
         choices=[
+            ('', ''),
             ('nt_state', 'nt_state'),
             ('nt_select', 'nt_select'),
             ('lo_freq', 'lo_freq'),
