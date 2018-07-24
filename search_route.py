@@ -29,9 +29,9 @@ def searchy(begin, end, refer):
     graph_meta_data = {
         # The user provided "begin", the beginning of the time range of interest
         # strptime() --> string parsed to a struct_time object
-        'begin': datetime.strptime(begin, "%m/%d/%Y %H:%M"), # 01/23/2019 12:27 PM
+        'begin': datetime.strptime(begin, "%Y-%m-%d %H:%M:%S"),
         # The user provided "end", the ending of the time range of interest
-        'end': datetime.strptime(end, "%m/%d/%Y %H:%M"),
+        'end': datetime.strptime(end, "%Y-%m-%d %H:%M:%S"),
         # The user's choice from the dropdown
         'attribute': refer,
         # the number of Datum objects in the DB
@@ -48,10 +48,7 @@ def searchy(begin, end, refer):
 
     # try to querry the DB, MongoEngine style
     try:
-        # TODO: make this loop something more sensible.
-        # What if the time range isn't that of the whole DB?
-        # Make this loop break before the end of the DB if the timestamps
-        # are too late, anyhow. ... or will this pattern break, later?
+        # Examine every record in the DB
         for datum in Datum.objects:
             # This function is called for every element in the DB
             double_tuple = datum_helper(datum, double_tuple)
