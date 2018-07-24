@@ -25,23 +25,21 @@ def create_app(configfile=None):
     @app.route('/', methods=('GET', 'POST'))
     def index():
         form = SearchForm(request.form)
-        # pprint(vars(form.x_pol))
-        # print("form: ", form.x_pol.raw_data)
-        # refer = form.x_pol.raw_data[0]
-        # refer = form.y_pol.raw_data[0]
-        # refer = form.gen_sys.raw_data[0]
+        if request.method == 'POST': # check whether the HTTP request sends data
+            fields = ["x_pol", "y_pol", "gen_sys"]
+            # Add validation. What if they don't include a timestamp?
+            # Add validation. What if they don't include a key?
+            # Add validation. They must chose data that exists.
 
-        # the above is problematic, yes?
-        # pickup here: make the user chose only one attribute
+            # format the timestamp
+            begin = timerator(form.begin.raw_data[0])
+            # format the timestamp
+            end = timerator(form.end.raw_data[0])
 
-        # begin = form.begin.raw_data[0] # e.g. --> 01/23/2019 12:27 PM
-        # end = form.end.raw_data[0]
-
-        # Address AM/PM confusion
-        # begin = timerator(begin)
-        # end = timerator(end)
-
-        # searchy(begin, end, refer)
+            for i in range(3):
+                # generate an HTML document with a graph of selected data
+                if (form[fields[i]].raw_data[0] != ""):
+                    searchy(begin, end, form[fields[i]].raw_data[0])
 
         return render_template('index.html', form=form)
 
