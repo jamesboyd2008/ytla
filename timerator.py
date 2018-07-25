@@ -2,7 +2,7 @@
 
 def timerator(time):
     """
-    This function a timestamp from one format to another.
+    This function converts a timestamp from one format to another.
 
     Parameters:
         time (str) : a timestamp, formatted thusly: MM/DD/YYYY HH:MM AM
