@@ -2,7 +2,8 @@
 
 from flask import Flask
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, DateField, SelectField
+from wtforms import DateField, IntegerField, RadioField, SelectField, \
+                    SubmitField
 from wtforms.validators import DataRequired, Length
 
 class SearchForm(FlaskForm):
@@ -49,18 +50,22 @@ class SearchForm(FlaskForm):
             ('lo_power', 'lo_power'),
         ]
     )
-
-    # datetimepicker http://eonasdan.github.io/bootstrap-datetimepicker/
-    begin = DateField(
+    # The beginning of the date range, counting backwards from now.
+    hours_prior = IntegerField(
+        id = "hours_prior",
+        label= "From this many hours prior:"
+    )
+    # beginning datetimepicker http://eonasdan.github.io/bootstrap-datetimepicker/
+    from_timestamp = DateField(
         id = 'begin_dtpicker',
-        label = 'From:',
+        label = 'From timestamp:',
         validators = [ DataRequired(), Length(min=18, max=19) ]
     )
+    # ending datetimepicker
     end = DateField(
         id = 'end_dtpicker',
         label = 'Until:',
         validators = [ DataRequired(), Length(min=18, max=19) ]
     )
-
     # Search button
     submit_button = SubmitField('Search')

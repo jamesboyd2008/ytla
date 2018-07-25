@@ -28,13 +28,20 @@
     <script src="{{url_for('.static', filename='moment.min.js')}}"></script>
     <script src="{{url_for('.static', filename='bootstrap-datetimepicker.min.js')}}"></script>
     <script type="text/javascript">
-        $(function () {
-            $('#begin_dtpicker').datetimepicker();
-        });
+        $(function () { $('#begin_dtpicker').datetimepicker(); });
     </script>
     <script type="text/javascript">
-        $(function () {
-            $('#end_dtpicker').datetimepicker();
+        $(function () { $('#end_dtpicker').datetimepicker(); });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#hours_prior").change(function(){
+                if (this.value) {
+                    $("#begin_dtpicker").prop('disabled', true);
+                } else {
+                    $("#begin_dtpicker").prop('disabled', false);
+                }
+            });
         });
     </script>
 {% endblock %}

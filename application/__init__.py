@@ -1,9 +1,9 @@
+from begin_end import begin_end
 from flask import Flask, render_template, request, flash
 from flask_bootstrap import Bootstrap
 from flask_appconfig import AppConfig
 from SearchForm import SearchForm
 from search_route import searchy
-from timerator import timerator
 
 def create_app(configfile=None):
     app = Flask(__name__)
@@ -20,12 +20,11 @@ def create_app(configfile=None):
         form = SearchForm(request.form)
         # check whether the HTTP request sends data
         if request.method == 'POST':
-
             fields = ["x_pol", "y_pol", "gen_sys"]
 
-            # format the timestamps
-            begin = timerator(form.begin.raw_data[0])
-            end = timerator(form.end.raw_data[0])
+            # format timestamps
+            begin = begin_end(form, 'begin')
+            end = begin_end(form, 'end')
 
             plottable = False
             empty_field_counter = 0
