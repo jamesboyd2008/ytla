@@ -11,13 +11,13 @@ def datum_helper(datum, double_tuple):
     graph.
 
     Parameters:
-        datum (Datum): all YTLA data from Datum and Antenna_Snapshot attached
+        datum (Datum) : all YTLA data from Datum and Antenna_Snapshot attached
                        to a specific timestamp
 
-        double_tuple (tuple): the graph and associated metadata
+        double_tuple (tuple) : the graph and associated metadata
 
     Returns:
-        double_tuple - and instance of Graph and a tuple of metadata
+        double_tuple (tuple) : An instance of Graph and a tuple of metadata
     """
 
     graph = double_tuple[0]
@@ -29,7 +29,7 @@ def datum_helper(datum, double_tuple):
     # TODO: check the accuracy of these timestamps
     # TODO: make this go _just_ past the end, so as to save a DB scrape
 
-    # Check whether the element of consideration is within the time range of 
+    # Check whether the element of consideration is within the time range of
     # interest.
     if (timestamp >= graph_meta_data['begin']) and (timestamp <= graph_meta_data['end']):
         if (graph_meta_data['attribute'] in gantt_chart_per_antenna):

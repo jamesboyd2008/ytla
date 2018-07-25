@@ -19,7 +19,7 @@ def searchy(begin, end, refer):
         refer (str) : The attribute of interest, e.g., sel1x
 
     Returns:
-        NoneType
+        plottable (bool) : Whether the graph is plottable.
     """
 
     # assuming mongod is running on 'localhost' at port 27017
@@ -57,4 +57,5 @@ def searchy(begin, end, refer):
         # you can define more errors, here
 
     # plot the graph
-    plotter(double_tuple)
+    plottable = plotter(double_tuple)
+    return plottable

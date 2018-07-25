@@ -1,16 +1,9 @@
-from pprint import pprint
 from flask import Flask, render_template, request, flash
 from flask_bootstrap import Bootstrap
 from flask_appconfig import AppConfig
-from flask_wtf import FlaskForm, RecaptchaField
-from flask_wtf.file import FileField
 from SearchForm import SearchForm
 from search_route import searchy
 from timerator import timerator
-from wtforms import TextField, HiddenField, ValidationError, RadioField,\
-    BooleanField, SubmitField, IntegerField, FormField, validators, DateField,\
-    SelectField
-from wtforms.validators import Required
 
 def create_app(configfile=None):
     app = Flask(__name__)
@@ -25,21 +18,30 @@ def create_app(configfile=None):
     @app.route('/', methods=('GET', 'POST'))
     def index():
         form = SearchForm(request.form)
-        if request.method == 'POST': # check whether the HTTP request sends data
-            fields = ["x_pol", "y_pol", "gen_sys"]
-            # Add validation. What if they don't include a timestamp?
-            # Add validation. What if they don't include a key?
-            # Add validation. They must chose data that exists.
+        # check whether the HTTP request sends data
+        if request.method == 'POST':
 
-            # format the timestamp
+            fields = ["x_pol", "y_pol", "gen_sys"]
+
+            # format the timestamps
             begin = timerator(form.begin.raw_data[0])
-            # format the timestamp
             end = timerator(form.end.raw_data[0])
 
+            plottable = False
+            empty_field_counter = 0
             for i in range(3):
                 # generate an HTML document with a graph of selected data
                 if (form[fields[i]].raw_data[0] != ""):
-                    searchy(begin, end, form[fields[i]].raw_data[0])
+                    plottable = searchy(begin, end, form[fields[i]].raw_data[0])
+                else:
+                    empty_field_counter += 1
+
+            # Check whether the user left all non-date params empty
+            if (empty_field_counter >= 3):
+                flash("Please select an option from a dropdown, below.")
+            # Notify the user if no data matches their query.
+            elif not plottable:
+                flash("There is no data within that time range.", 'warning')
 
         return render_template('index.html', form=form)
 
