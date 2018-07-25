@@ -38,7 +38,7 @@ def timerator(time):
 
     # Move numbers around. Add underscore. Add hyphens.
     time = time[slice(6, 10)]  + '-' + time[slice(0, 2)]   + '-' +\
-           time[slice(3, 5)]   + ' ' + time[slice(11, 13)] + ':' +\
+           time[slice(3, 5)]   + '_' + time[slice(11, 13)] + ':' +\
            time[slice(14, 16)] + ':' + '00'
 
     return time

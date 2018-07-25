@@ -29,9 +29,9 @@ def searchy(begin, end, refer):
     graph_meta_data = {
         # The user provided "begin", the beginning of the time range of interest
         # strptime() --> string parsed to a struct_time object
-        'begin': datetime.strptime(begin, "%Y-%m-%d %H:%M:%S"),
+        'begin': datetime.strptime(begin, "%Y-%m-%d_%H:%M:%S"),
         # The user provided "end", the ending of the time range of interest
-        'end': datetime.strptime(end, "%Y-%m-%d %H:%M:%S"),
+        'end': datetime.strptime(end, "%Y-%m-%d_%H:%M:%S"),
         # The user's choice from the dropdown
         'attribute': refer,
         # the number of Datum objects in the DB
