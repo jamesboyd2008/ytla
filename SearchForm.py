@@ -2,7 +2,8 @@
 
 from flask import Flask
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, DateField, SelectField, validators
+from wtforms import SubmitField, DateField, SelectField
+from wtforms.validators import DataRequired, Length
 
 class SearchForm(FlaskForm):
     """
@@ -53,12 +54,12 @@ class SearchForm(FlaskForm):
     begin = DateField(
         id = 'begin_dtpicker',
         label = 'From:',
-        validators = [ validators.DataRequired() ]
+        validators = [ DataRequired(), Length(min=18, max=19) ]
     )
     end = DateField(
         id = 'end_dtpicker',
         label = 'Until:',
-        validators = [ validators.DataRequired() ]
+        validators = [ DataRequired(), Length(min=18, max=19) ]
     )
 
     # Search button
