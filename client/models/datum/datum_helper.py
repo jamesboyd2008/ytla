@@ -1,10 +1,14 @@
 # This file contains the datum_helper(arg, arg, arg, ... ) function, which takes arg arg arg and opens an HTML document that displays a graph.
 
 from .. search.search_imports import *
-from gantt_chart_per_antenna_composer import gantt_chart_per_antenna_composer
-from lone_gantt_chart_composer import lone_gantt_chart_composer
-from line_chart_per_antenna_composer import line_chart_per_antenna_composer
-from lone_line_chart_composer import lone_line_chart_composer
+from .. graph.composers.gantt.ant_gantt_c \
+        import ant_gantt_c
+from .. graph.composers.gantt.one_gantt_c \
+        import one_gantt_c
+from .. graph.composers.line.ant_line_c \
+        import ant_line_c
+from .. graph.composers.line.one_line_c \
+        import one_line_c
 
 def datum_helper(datum, double_tuple):
     """
@@ -34,13 +38,13 @@ def datum_helper(datum, double_tuple):
     # interest.
     if (timestamp >= graph_meta_data['begin']) and (timestamp <= graph_meta_data['end']):
         if (graph_meta_data['attribute'] in gantt_chart_per_antenna):
-            graph = gantt_chart_per_antenna_composer(datum, double_tuple)
+            graph = ant_gantt_c(datum, double_tuple)
         elif (graph_meta_data['attribute'] in lone_gantt_chart):
-            graph = lone_gantt_chart_composer(datum, double_tuple)
+            graph = one_gantt_c(datum, double_tuple)
         elif (graph_meta_data['attribute'] in line_chart_per_antenna):
-            graph = line_chart_per_antenna_composer(datum, double_tuple)
+            graph = ant_line_c(datum, double_tuple)
         else: # (graph_meta_data['attribute'] in lone_line_chart):
-            graph = lone_line_chart_composer(datum, double_tuple)
+            graph = one_line_c(datum, double_tuple)
 
         graph.x_values.append(datum.timestamp)
 

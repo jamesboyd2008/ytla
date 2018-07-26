@@ -1,8 +1,8 @@
-# This file contains the definition of the line_chart_per_antenna_composer function.
+# This file contains the definition of the one_line_c function.
 
-def line_chart_per_antenna_composer(datum, double_tuple):
+def one_line_c(datum, double_tuple):
     """
-    This function processes data to be graphed as a multi-line plot.
+    This function processes data to be graphed as a single-line line chart.
 
     Parameters:
         datum (Datum) : Data associated with the same timestamp.
@@ -15,9 +15,6 @@ def line_chart_per_antenna_composer(datum, double_tuple):
 
     graph = double_tuple[0]
     graph_meta_data = double_tuple[1]
-
-    for antenna in range(0, 8):
-        graph.y_values_per_antenna[antenna].\
-        append(datum.antennas[antenna][graph_meta_data['attribute']])
+    graph.lone_y_values.append(datum[graph_meta_data['attribute']])
 
     return graph

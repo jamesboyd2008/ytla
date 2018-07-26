@@ -1,8 +1,8 @@
-# This file defines the lone_line_chart_grapher function.
+# This file defines the one_line_g function.
 
-from search_imports import *
+from .... search.search_imports import *
 
-def lone_line_chart_grapher(graph, title, attr):
+def one_line_g(graph, title, attr):
     """
     This function plots a line chart.
 
@@ -14,7 +14,7 @@ def lone_line_chart_grapher(graph, title, attr):
     Returns:
         NoneType
     """
-    
+
     graph.data_gettin_visualized.append(
         Scatter(
             y=graph.lone_y_values,

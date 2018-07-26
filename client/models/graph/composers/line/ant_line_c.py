@@ -1,8 +1,8 @@
-# This file contains the definition of the lone_line_chart_composer function.
+# This file contains the definition of the ant_line_c function.
 
-def lone_line_chart_composer(datum, double_tuple):
+def ant_line_c(datum, double_tuple):
     """
-    This function processes data to be graphed as a single-line line chart.
+    This function processes data to be graphed as a multi-line plot.
 
     Parameters:
         datum (Datum) : Data associated with the same timestamp.
@@ -15,6 +15,9 @@ def lone_line_chart_composer(datum, double_tuple):
 
     graph = double_tuple[0]
     graph_meta_data = double_tuple[1]
-    graph.lone_y_values.append(datum[graph_meta_data['attribute']])
+
+    for antenna in range(0, 8):
+        graph.y_values_per_antenna[antenna].\
+        append(datum.antennas[antenna][graph_meta_data['attribute']])
 
     return graph

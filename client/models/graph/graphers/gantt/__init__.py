@@ -2,4 +2,4 @@
 # containing packages.
 
 # To enable wildcard import statements
-__all__ = [ "gantt_chart_per_antenna_grapher", "lone_gantt_chart_grapher" ]
+__all__ = [ "ant_gantt_g", "one_gantt_g" ]

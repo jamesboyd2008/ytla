@@ -1,13 +1,13 @@
-# This file defines the lone_gantt_chart_grapher function.
+# This file defines ant_gantt_g function.
 
-from search_imports import *
+from .... search.search_imports import *
 
-def lone_gantt_chart_grapher(graph, title):
+def ant_gantt_g(graph, title):
     """
-    This function generates and opens an HTML document containing a graph.
+    This function graphs a multi-bar gantt chart.
 
     Parameters:
-        graph (Graph) : The data to be graphed.
+        graph (Graph) : Data that will be graphed.
         title (str) : The title of the graph.
 
     Returns:
@@ -23,19 +23,26 @@ def lone_gantt_chart_grapher(graph, title):
         colors[label] = rgb_colors[color_count]
         color_count += 1
 
+    # Make dummy data bars grey.
+    colors['dummy data'] = 'rgb(128, 128, 128)' # gray
+
+    # Process the 2D array of gantt_values_per_antenna for graphing
+    for antenna in graph.gantt_values_per_antenna:
+        for entry in antenna:
+            graph.data_gettin_visualized.append(entry)
+
     # Use plotly's figure factory, ff, to almost display a gantt chart
-    graph.data_gettin_visualized = ff.create_gantt(
-        graph.attr_states,
+    figure = ff.create_gantt(
+        graph.data_gettin_visualized,
         colors = colors,
         group_tasks = True,
         index_col = 'Resource',
         show_colorbar = True,
         title = title
     )
-
     # Display the gantt chart
     plotly.offline.plot(
-        graph.data_gettin_visualized,
+        figure,
         filename = r"visualization.html",
         auto_open = True
     )

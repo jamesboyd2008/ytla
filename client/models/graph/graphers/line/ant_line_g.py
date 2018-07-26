@@ -1,8 +1,8 @@
 # This file defines the line_chart_per_antenna function.
 
-from search_imports import *
+from .... search.search_imports import *
 
-def line_chart_per_antenna_grapher(graph, title, attr):
+def ant_line_g(graph, title, attr):
     """
     This function graphs multiple line plots.
 

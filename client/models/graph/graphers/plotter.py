@@ -1,11 +1,11 @@
 # This file defines the plotter function, which, given chart data, plots a
 # chart on an HTML document and opens that document in the default web browser.
 
-from search_imports import *
-from line_chart_per_antenna_grapher import line_chart_per_antenna_grapher
-from lone_line_chart_grapher import lone_line_chart_grapher
-from gantt_chart_per_antenna_grapher import gantt_chart_per_antenna_grapher
-from lone_gantt_chart_grapher import lone_gantt_chart_grapher
+from ... search.search_imports import *
+from . line.ant_line_g import ant_line_g
+from . line.one_line_g import one_line_g
+from . gantt.ant_gantt_g import ant_gantt_g
+from . gantt.one_gantt_g import one_gantt_g
 
 def plotter(double_tuple):
     """
@@ -29,13 +29,13 @@ def plotter(double_tuple):
         title = f"{graph_meta_data['attribute']} from {beginning} to {ending}"
 
         if (graph_meta_data['attribute'] in line_chart_per_antenna): # does this need to be inside the loop?
-            line_chart_per_antenna_grapher(graph, title, graph_meta_data['attribute'])
+            ant_line_g(graph, title, graph_meta_data['attribute'])
         elif (graph_meta_data['attribute'] in lone_line_chart):
-            lone_line_chart_grapher(graph, title, graph_meta_data['attribute'])
+            one_line_g(graph, title, graph_meta_data['attribute'])
         elif (graph_meta_data['attribute'] in gantt_chart_per_antenna):
-            gantt_chart_per_antenna_grapher(graph, title)
+            ant_gantt_g(graph, title)
         else: # it's a lone_gantt_chart
-            lone_gantt_chart_grapher(graph, title)
+            one_gantt_g(graph, title)
 
         plottable = True
 

@@ -1,9 +1,9 @@
-# This file contains the definition of the gantt_chart_per_antenna_composer function.
+# This file contains the definition of the ant_gantt_c function.
 
 from datetime import datetime
 import time
 
-def gantt_chart_per_antenna_composer(datum, double_tuple):
+def ant_gantt_c(datum, double_tuple):
     """
     This function processes data to be graphed as a multi-bar gantt chart.
 

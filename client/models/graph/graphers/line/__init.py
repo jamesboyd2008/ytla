@@ -2,4 +2,4 @@
 # containing packages.
 
 # To enable wildcard import statements
-__all__ = [ "line_chart_per_antenna_grapher", "lone_line_chart_grapher.py" ]
+__all__ = [ "ant_line_g", "one_line_g.py" ]
