@@ -4,7 +4,7 @@ visualization collections, such as lists of values for line charts and
 gantt charts.
 """
 
-from attributes import *
+from .. search.attributes import *
 
 # A list of they keys in the attriubtes dictionary
 attribute_names = list(attributes.keys())

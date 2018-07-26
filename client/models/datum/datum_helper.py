@@ -1,6 +1,6 @@
 # This file contains the datum_helper(arg, arg, arg, ... ) function, which takes arg arg arg and opens an HTML document that displays a graph.
 
-from search_imports import *
+from .. search.search_imports import *
 from gantt_chart_per_antenna_composer import gantt_chart_per_antenna_composer
 from lone_gantt_chart_composer import lone_gantt_chart_composer
 from line_chart_per_antenna_composer import line_chart_per_antenna_composer

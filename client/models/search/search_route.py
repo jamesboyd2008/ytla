@@ -1,8 +1,8 @@
 # This file contains the definition of the searchy function, which handles user
 # provided information from the client to yield the desired visualization.
 
-from search_imports import *
-from datum_helper import *
+from . search_imports import *
+from .. datum.datum_helper import *
 from plotter import plotter
 
 def searchy(begin, end, refer):

@@ -1,6 +1,6 @@
 # This file contains the definition for the begin_end function.
 
-from SearchForm import SearchForm
+from ..models.search.SearchForm import SearchForm
 import datetime
 from . timerator import timerator
 # pickup here: move helpers, one at a time, into helpers dir

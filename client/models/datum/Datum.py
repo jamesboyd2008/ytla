@@ -5,7 +5,7 @@ telescope data associated with the same timestamp.
 
 from datetime import datetime
 import time
-from Antenna_Snapshot import Antenna_Snapshot
+from .. antennas.Antenna_Snapshot import Antenna_Snapshot
 from mongoengine import *
 
 class Datum(Document):
