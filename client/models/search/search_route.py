@@ -46,9 +46,9 @@ def searchy(begin, end, refer):
         # Examine every record in the DB
         for datum in Datum.objects:
             # add everything, then send it to some func like datum_helper()
-
+            num = 2 + 2
             # This function is called for every element in the DB
-            double_tuple = datum_helper(datum, double_tuple)
+            # double_tuple = datum_helper(datum, double_tuple)
     except Exception as err:
         print(err)
         # you can define more errors, here
