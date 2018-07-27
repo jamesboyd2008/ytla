@@ -1,0 +1,9 @@
+533  python2.7 mongoengine_ytla7.py  [this fails]
+534  which pip2.7
+539  which wget
+541  brew install wget
+542  wget https://bootstrap.pypa.io/get-pip.py
+543  python2.7 get-pip.py
+544  sudo python2.7 get-pip.py
+547  sudo pip2.7 install mongoengine
+548  python2.7 mongoengine_ytla7.py [this succeeds]
