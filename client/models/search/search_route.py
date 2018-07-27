@@ -28,16 +28,11 @@ def searchy(begin, end, refer):
 
     graph_meta_data = {
         # The user provided "begin", the beginning of the time range of interest
-        # strptime() --> string parsed to a struct_time object
-        'begin': datetime.strptime(begin, "%Y-%m-%d_%H:%M:%S"),
+        'begin': begin,
         # The user provided "end", the ending of the time range of interest
-        'end': datetime.strptime(end, "%Y-%m-%d_%H:%M:%S"),
+        'end': end,
         # The user's choice from the dropdown
-        'attribute': refer,
-        # the number of Datum objects in the DB
-        'data_quantity': len(Datum.objects),
-        # a counter, representing the number of Datum objects
-        'data_count': 1
+        'attribute': refer
     }
 
     # The object that will get graphed
@@ -45,16 +40,20 @@ def searchy(begin, end, refer):
 
     double_tuple = (graph, graph_meta_data)
 
-
+    start = time.perf_counter()
     # try to querry the DB, MongoEngine style
     try:
         # Examine every record in the DB
         for datum in Datum.objects:
+            # add everything, then send it to some func like datum_helper()
+
             # This function is called for every element in the DB
             double_tuple = datum_helper(datum, double_tuple)
     except Exception as err:
         print(err)
         # you can define more errors, here
+    end = time.perf_counter()
+    print(f"time elapsed: {end - start}")
 
     # plot the graph
     plottable = plotter(double_tuple)

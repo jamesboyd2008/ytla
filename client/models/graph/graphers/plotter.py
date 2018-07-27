@@ -24,8 +24,8 @@ def plotter(double_tuple):
     if len(graph.x_values) == 0:
         plottable = False
     else:
-        beginning = graph_meta_data['begin'].strftime('%Y-%m-%d %H:%M:%S')
-        ending = graph_meta_data['end'].strftime('%Y-%m-%d %H:%M:%S')
+        beginning = graph_meta_data['begin'].replace('_', ' ')
+        ending = graph_meta_data['end'].replace('_', ' ')
         title = f"{graph_meta_data['attribute']} from {beginning} to {ending}"
 
         if (graph_meta_data['attribute'] in line_chart_per_antenna): # does this need to be inside the loop?
