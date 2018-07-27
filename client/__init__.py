@@ -1,11 +1,23 @@
-from . helpers.begin_end import begin_end
-from flask import Flask, render_template, request, flash
-from flask_bootstrap import Bootstrap
-from flask_appconfig import AppConfig
-from . models.search.SearchForm import SearchForm
-from . models.search.search_route import searchy
+# This file defines the create_app function and allows the client directory
+# to be treated as containing packages.
 
 def create_app(configfile=None):
+    """
+    This function creates the application.
+
+    Parameters:
+        configfile (str) : the optional and highly recommened configuration file
+
+    Returns
+        app (Flask) : an instance of a Flask application
+    """
+    from . helpers.begin_end import begin_end
+    from flask import Flask, render_template, request, flash
+    from flask_bootstrap import Bootstrap
+    from flask_appconfig import AppConfig
+    from . models.search.SearchForm import SearchForm
+    from . models.search.search_route import searchy
+
     app = Flask(__name__)
     AppConfig(app, configfile)  # Flask-Appconfig is not necessary, but
                                 # highly recommend =)
