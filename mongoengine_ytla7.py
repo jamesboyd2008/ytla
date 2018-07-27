@@ -9,12 +9,12 @@ if __name__ == '__main__':
     from subprocess import *
     from datetime import datetime
 
-    # class for all same-timestamp data
-    from Datum import Datum
-    # class for all same-antenna data
-    from Antenna_Snapshot import Antenna_Snapshot
     # Python/MongoDB interface that supports python objects as DB records
     from mongoengine import *
+    # class for all same-timestamp data
+    from client.models.datum.Datum import Datum
+    # class for all same-antenna data
+    from client.models.antennas.Antenna_Snapshot import Antenna_Snapshot
 
     import time
     import redis
