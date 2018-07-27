@@ -4,8 +4,8 @@
 # Some data are random.
 # Some data are from the Yuan-Tseh Lee Array (ytla) radio telescope.
 
-from Datum import Datum
-from Antenna_Snapshot import Antenna_Snapshot
+from client.models.datum.Datum import Datum
+from client.models.antennas.Antenna_Snapshot import Antenna_Snapshot
 from mongoengine import *
 import random
 
