@@ -38,23 +38,33 @@ def searchy(begin, end, refer):
     # The object that will get graphed
     graph = Graph()
 
-    double_tuple = (graph, graph_meta_data)
-
-    start = time.perf_counter()
-    # try to querry the DB, MongoEngine style
+    # querry the DB
     try:
-        # Examine every record in the DB
-        for datum in Datum.objects:
-            # add everything, then send it to some func like datum_helper()
-            num = 2 + 2
-            # This function is called for every element in the DB
-            # double_tuple = datum_helper(datum, double_tuple)
+        # Get everything from the DB in the range of interest.
+        query_start = time.perf_counter()
+        data = Datum.objects(__raw__={\
+        'timestamp': {"$gte": graph_meta_data['begin']}, \
+        'timestamp': {"$lte": graph_meta_data['end']}})
+        query_end = time.perf_counter()
+        print(f"seconds elapsed for DB query: {query_end - query_start}")
+
+        processing_start = time.perf_counter()
+        # Process the data, depending on how it is to be visualized.
+        if (graph_meta_data['attribute'] in gantt_chart_per_antenna):
+            graph = ant_gantt_c(data, graph_meta_data)
+        elif (graph_meta_data['attribute'] in lone_gantt_chart):
+            graph = one_gantt_c(data, graph_meta_data)
+        elif (graph_meta_data['attribute'] in line_chart_per_antenna):
+            graph = ant_line_c(data, graph_meta_data)
+        else: # (graph_meta_data['attribute'] in lone_line_chart):
+            graph = one_line_c(data, graph_meta_data)
+
+        processing_end = time.perf_counter()
+        print(f"seconds elapsed for pre-plotly processing: {processing_end - processing_start}")
+
     except Exception as err:
         print(err)
-        # you can define more errors, here
-    end = time.perf_counter()
-    print(f"time elapsed: {end - start}")
 
     # plot the graph
-    plottable = plotter(double_tuple)
+    plottable = plotter(graph, graph_meta_data)
     return plottable
