@@ -42,9 +42,10 @@ def searchy(begin, end, refer):
     try:
         # Get everything from the DB in the range of interest.
         query_start = time.perf_counter()
-        data = Datum.objects(__raw__={\
-        'timestamp': {"$gte": graph_meta_data['begin']}, \
-        'timestamp': {"$lte": graph_meta_data['end']}})
+
+        data = Datum.objects(__raw__={'timestamp': \
+        {"$gte": graph_meta_data['begin'], "$lte": graph_meta_data['end'] }})
+
         query_end = time.perf_counter()
         print(f"seconds elapsed for DB query: {query_end - query_start}")
 
