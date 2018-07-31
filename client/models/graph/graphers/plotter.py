@@ -7,19 +7,17 @@ from . line.one_line_g import one_line_g
 from . gantt.ant_gantt_g import ant_gantt_g
 from . gantt.one_gantt_g import one_gantt_g
 
-def plotter(double_tuple):
+def plotter(graph, graph_meta_data):
     """
     This function plots charts.
 
     Parameters:
-        double_tuple (tuple) : The graph and its associated metadata.
+        graph (Graph) : Graph data.
+        graph_meta_data (dict) : Metadata associated with the graph.
 
     Returns:
         plottable (bool) : Whether there are any x coordinates to plot.
     """
-
-    graph = double_tuple[0]
-    graph_meta_data = double_tuple[1]
 
     if len(graph.x_values) == 0:
         plottable = False

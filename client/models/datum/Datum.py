@@ -12,9 +12,9 @@ class Datum(Document):
     # Fields are picked from here:
     # http://docs.mongoengine.org/apireference.html#fields
     # datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
-    timestamp = StringField() # from local machine
-    nt_state = StringField() # also in logSys
-    nt_select = StringField() # also in logSys
+    timestamp = StringField(default="0000-00-00_00:00:00") # from local machine
+    nt_state = StringField(default="dummy data") # also in logSys
+    nt_select = StringField(default="dummy data") # also in logSys
     lo_freq = FloatField(default=0.0) # also in logSys
     lo_power = FloatField(default=0.0) # also in logSys
     # 0-6 Antenna_Snapshot objects plus lucky number 7
