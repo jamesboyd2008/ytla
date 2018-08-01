@@ -8,3 +8,6 @@ gantt-group-tasks-together.html
 
 # node modules
 /node_modules
+
+# script to seed the DB with partially filled objects
+quick_seed.py
