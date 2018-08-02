@@ -2,8 +2,12 @@
 # provided information from the client to yield the desired visualization.
 
 from . search_imports import *
-from .. datum.datum_helper import *
+from .. datum.datum_helper import datum_helper
 from .. graph.graphers.plotter import plotter
+
+def dump(obj):
+  for attr in dir(obj):
+    print("obj.%s = %r" % (attr, getattr(obj, attr)))
 
 def searchy(begin, end, refer):
     """
@@ -35,36 +39,24 @@ def searchy(begin, end, refer):
         'attribute': refer
     }
 
-    # The object that will get graphed
-    graph = Graph()
+    # TODO: use hash to rename visualizaiton.html
 
     # querry the DB
     try:
         # Get everything from the DB in the range of interest.
         query_start = time.perf_counter()
 
-        data = Datum.objects(__raw__={'timestamp': \
-        {"$gte": graph_meta_data['begin'], "$lte": graph_meta_data['end'] }})
-
+        # TODO: add projection to query to improve speed
+        data = Datum.objects(timestamp__gte=graph_meta_data['begin'], timestamp__lte=graph_meta_data['end'])
         query_end = time.perf_counter()
         print(f"seconds elapsed for DB query: {query_end - query_start}")
-
-        processing_start = time.perf_counter()
-        # Process the data, depending on how it is to be visualized.
-        if (graph_meta_data['attribute'] in gantt_chart_per_antenna):
-            graph = ant_gantt_c(data, graph_meta_data)
-        elif (graph_meta_data['attribute'] in lone_gantt_chart):
-            graph = one_gantt_c(data, graph_meta_data)
-        elif (graph_meta_data['attribute'] in line_chart_per_antenna):
-            graph = ant_line_c(data, graph_meta_data)
-        else: # (graph_meta_data['attribute'] in lone_line_chart):
-            graph = one_line_c(data, graph_meta_data)
-
-        processing_end = time.perf_counter()
-        print(f"seconds elapsed for pre-plotly processing: {processing_end - processing_start}")
-
     except Exception as err:
         print(err)
+
+    processing_start = time.perf_counter()
+    graph = datum_helper(data, graph_meta_data)
+    processing_end = time.perf_counter()
+    print(f"seconds elapsed for pre-plotly processing: {processing_end - processing_start}")
 
     # plot the graph
     plottable = plotter(graph, graph_meta_data)
