@@ -42,12 +42,12 @@ def datum_helper(data, graph_meta_data):
     print(f"big data.count() --> {data.count()}")
     # Choose appropriate visualization
     if (graph_meta_data['attribute'] in gantt_chart_per_antenna):
-        graph = ant_gantt_c(data, graph_meta_data, handicap)
+        graph = ant_gantt_c(data, graph_meta_data, count, handicap)
     elif (graph_meta_data['attribute'] in lone_gantt_chart):
-        graph = one_gantt_c(data, graph_meta_data, handicap)
+        graph = one_gantt_c(data, graph_meta_data, count, handicap)
     elif (graph_meta_data['attribute'] in line_chart_per_antenna):
         graph = ant_line_c(data, graph_meta_data, count, handicap)
     else: # (graph_meta_data['attribute'] in lone_line_chart):
-        graph = one_line_c(data, graph_meta_data, handicap)
+        graph = one_line_c(data, graph_meta_data, count, handicap)
 
     return graph
