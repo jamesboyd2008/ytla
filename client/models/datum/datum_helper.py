@@ -1,10 +1,11 @@
 # This file contains the datum_helper(arg, arg, arg, ... ) function, which takes arg arg arg and opens an HTML document that displays a graph.
 
-from .. search.search_imports import *
+import datetime
 from .. graph.composers.gantt.ant_gantt_c import ant_gantt_c
 from .. graph.composers.gantt.one_gantt_c import one_gantt_c
 from .. graph.composers.line.ant_line_c import ant_line_c
 from .. graph.composers.line.one_line_c import one_line_c
+from .. search.search_imports import *
 
 def datum_helper(data, graph_meta_data):
     """
@@ -23,8 +24,11 @@ def datum_helper(data, graph_meta_data):
     # The object that will get graphed
     graph = Graph()
 
-    # To ensure that no more than 500 points are plotted.
-    count = data.count()
+    end = datetime.strptime( graph_meta_data['end'], "%Y-%m-%d_%H:%M:%S")
+    begin = datetime.strptime( graph_meta_data['begin'], "%Y-%m-%d_%H:%M:%S")
+    count = round( ( end - begin ).total_seconds() ) / 2
+
+    # To ensure that the quantity of points plotted is between ~ (12.5, 125).
     # TODO: pick handicap more smartlier
     if count > 1000:
         if count > 100000000:

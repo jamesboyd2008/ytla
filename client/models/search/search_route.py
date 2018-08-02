@@ -5,10 +5,6 @@ from . search_imports import *
 from .. datum.datum_helper import datum_helper
 from .. graph.graphers.plotter import plotter
 
-def dump(obj):
-  for attr in dir(obj):
-    print("obj.%s = %r" % (attr, getattr(obj, attr)))
-
 def searchy(begin, end, refer):
     """
     This function searches the DB.
