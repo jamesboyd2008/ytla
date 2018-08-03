@@ -9,7 +9,7 @@ def timerator(time):
                                          or thusly: MM/DD/YYYY H:MM AM
 
     Returns:
-        time (str) : a timestamp, formatted thusly: YYYY-MM-DD_HH:MM:SS
+        time (str) : a timestamp, formatted thusly: YYYY-MM-DD_HH:MM
     """
 
     # Ensure the hour is being represented with two characters
@@ -39,6 +39,6 @@ def timerator(time):
     # Move numbers around. Add underscore. Add hyphens.
     time = time[slice(6, 10)]  + '-' + time[slice(0, 2)]   + '-' +\
            time[slice(3, 5)]   + '_' + time[slice(11, 13)] + ':' +\
-           time[slice(14, 16)] + ':' + '00'
+           time[slice(14, 16)]
 
     return time

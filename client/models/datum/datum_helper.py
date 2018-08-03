@@ -1,4 +1,4 @@
-# This file contains the datum_helper(arg, arg, arg, ... ) function, which takes arg arg arg and opens an HTML document that displays a graph.
+# This file contains the definition of the datum_helper function.
 
 import datetime
 from .. graph.composers.gantt.ant_gantt_c import ant_gantt_c
@@ -24,9 +24,9 @@ def datum_helper(data, graph_meta_data):
     # The object that will get graphed
     graph = Graph()
 
-    end = datetime.strptime( graph_meta_data['end'], "%Y-%m-%d_%H:%M:%S")
-    begin = datetime.strptime( graph_meta_data['begin'], "%Y-%m-%d_%H:%M:%S")
-    count = round( ( end - begin ).total_seconds() ) / 2
+    end = datetime.strptime( graph_meta_data['end'], "%Y-%m-%d_%H:%M)
+    begin = datetime.strptime( graph_meta_data['begin'], "%Y-%m-%d_%H:%M")
+    count = round( ( end - begin ).total_seconds() ) / 5
 
     # To ensure that the quantity of points plotted is between ~ (12.5, 125).
     # TODO: pick handicap more smartlier

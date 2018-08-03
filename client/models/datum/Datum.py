@@ -14,7 +14,7 @@ class Datum(Document):
     # Fields are picked from here:
     # http://docs.mongoengine.org/apireference.html#fields
     # datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
-    timestamp = StringField(default = "0000-00-00_00:00:00")
+    timestamp = StringField(default = "0000-00-00_00:00")
     nt_state = DictField(default = make_an_hour("dummy data")) # also in logSys
     nt_select = DictField(default = make_an_hour("dummy data")) # also in logSys
     lo_freq = DictField(default = make_an_hour(0.0)) # also in logSys
