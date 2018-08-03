@@ -42,11 +42,9 @@ def searchy(begin, end, refer):
         # Get everything from the DB in the range of interest.
         query_start = time.perf_counter()
 
-        # Query the DB, returning only the field of interest.
+        # Query the DB
         data = Datum.objects(timestamp__gte=graph_meta_data['begin'], \
-                             timestamp__lte=graph_meta_data['end']).\
-                                     only( timestamp, refer,  )
-        # If you later need the missing fields, just call reload() on document.
+                             timestamp__lte=graph_meta_data['end'])
 
         query_end = time.perf_counter()
         print(f"seconds elapsed for DB query: {query_end - query_start}")
