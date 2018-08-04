@@ -42,6 +42,7 @@ def create_app(configfile=None):
             begin_check = datetime.datetime.strptime(begin, "%Y-%m-%d_%H:%M")
             end_check = datetime.datetime.strptime(end, "%Y-%m-%d_%H:%M")
             delta_t = end_check - begin_check
+            print(f"delta_t.days --> {delta_t.days}")
             if delta_t.days >= 7:
                 flash("Time range more than 1 week. This will take minuteS.")
 
