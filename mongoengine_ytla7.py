@@ -421,4 +421,4 @@ while (1):
         flogLF_Y.close()
         flogIFLO_X.close()
         flogIFLO_Y.close()
-        time.sleep(2)
+        time.sleep(60)
