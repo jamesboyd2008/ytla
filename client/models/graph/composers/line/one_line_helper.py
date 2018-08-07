@@ -1,4 +1,4 @@
-# This file contains the definition of the ant_line_helper function.
+# This file contains the definition of the one_line_helper function.
 
 from ... Graph import Graph
 from .... datum.Datum import Datum
@@ -7,6 +7,7 @@ def ant_line_helper(datum, graph, graph_meta_data, hr, min):
     """
     This function processes one day of one attribute's data.
 
+    This function produces 720 (x,y) coordinates.
     60 data_points/hr * 24 hr/day= 1440 data_points/day
 
     Parameters:
@@ -33,12 +34,9 @@ def ant_line_helper(datum, graph, graph_meta_data, hr, min):
             moment += padded_hr_str + ':' + padded_min_str
             # Add the x coordinate of the (x,y) pair
             graph.x_values.append(moment)
-
-            for antenna in range(0, 8):
-                # Add the y coordinate of the (x,y) pair
-                graph.y_values_per_antenna[antenna].\
-                append(datum.antennas[antenna][graph_meta_data['attribute']]\
-                [hr_str][min_str])
+            # Add the y coordinate of the (x,y) pair
+            graph.lone_y_values.append(\
+            datum[graph_meta_data['attribute']][hr_str][min_str])
 
         min = 0
 

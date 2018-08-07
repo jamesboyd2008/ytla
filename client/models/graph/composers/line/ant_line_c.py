@@ -25,7 +25,8 @@ def ant_line_c(data, graph_meta_data, x_val_quant):
     min = int(data[0].timestamp[14:16])
 
     for datum in data:
-        # process the DB document, a single hour's worth of diagnostic data.
+        # process the DB document, a single day's worth of diagnostic data.
         graph = ant_line_helper(datum, graph, graph_meta_data, hr, min)
-        min, sec = 0, 0
+        hr, min = 0, 0
+
     return graph
