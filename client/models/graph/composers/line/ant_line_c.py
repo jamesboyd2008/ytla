@@ -19,14 +19,13 @@ def ant_line_c(data, graph_meta_data, x_val_quant):
 
     # The object to be graphed.
     graph = Graph()
-    # Identify the hour at which to begin plotting and remove any leading '0'.
-    hr = str(int(datum.timestamp[11:13]))
-    # Identify the minute at which to begin plotting and remove any leading '0'.
-    min = str(int(datum.timestamp[14:16]))
-    sec = '0' # The user-facing GUI allows a maximum granularity of one minute.
+    # Grab the hour from the timestamp.
+    hr = int(data[0].timestamp[11:13])
+    # Grab the minute from the timestamp.
+    min = int(data[0].timestamp[14:16])
 
     for datum in data:
         # process the DB document, a single hour's worth of diagnostic data.
-        graph = ant_line_helper(datum, graph, hr, min, sec)
-
+        graph = ant_line_helper(datum, graph, graph_meta_data, hr, min)
+        min, sec = 0, 0
     return graph

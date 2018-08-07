@@ -4,7 +4,7 @@
 from datetime import datetime
 import time
 from .. antennas.Antenna_Snapshot import Antenna_Snapshot
-from ... helpers.make_an_hour import make_an_hour
+from ... helpers.make_a_day import make_a_day
 from mongoengine import *
 
 class Datum(Document):
@@ -15,9 +15,9 @@ class Datum(Document):
     # http://docs.mongoengine.org/apireference.html#fields
     # datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
     timestamp = StringField(default = "0000-00-00_00:00")
-    nt_state = DictField(default = make_an_hour("dummy data")) # also in logSys
-    nt_select = DictField(default = make_an_hour("dummy data")) # also in logSys
-    lo_freq = DictField(default = make_an_hour(0.0)) # also in logSys
-    lo_power = DictField(default = make_an_hour(0.0)) # also in logSys
+    nt_state = DictField(default = make_a_day("dummy data")) # also in logSys
+    nt_select = DictField(default = make_a_day("dummy data")) # also in logSys
+    lo_freq = DictField(default = make_a_day(0.0)) # also in logSys
+    lo_power = DictField(default = make_a_day(0.0)) # also in logSys
     # 0-6 Antenna_Snapshot objects plus lucky number 7
     antennas = ListField(EmbeddedDocumentField(Antenna_Snapshot))
