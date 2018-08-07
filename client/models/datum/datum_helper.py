@@ -26,7 +26,7 @@ def datum_helper(data, graph_meta_data):
 
     end = datetime.strptime( graph_meta_data['end'], "%Y-%m-%d_%H:%M")
     begin = datetime.strptime( graph_meta_data['begin'], "%Y-%m-%d_%H:%M")
-    x_val_quant = ( end - begin ).total_minutes()
+    x_val_quant = int(( end - begin ).total_seconds() / 60)
 
     print(f"big data.count() --> {data.count()}")
     # Choose appropriate visualization
