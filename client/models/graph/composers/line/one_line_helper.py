@@ -3,7 +3,7 @@
 from ... Graph import Graph
 from .... datum.Datum import Datum
 
-def ant_line_helper(datum, graph, graph_meta_data, hr, min):
+def one_line_helper(datum, graph, graph_meta_data, hr, min):
     """
     This function processes one day of one attribute's data.
 
