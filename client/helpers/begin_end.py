@@ -3,7 +3,7 @@
 from ..models.search.SearchForm import SearchForm
 import datetime
 from . timerator import timerator
-# pickup here: move helpers, one at a time, into helpers dir
+
 def begin_end(form, which_var):
     """
     This function formats a timestamp from a SearchForm.
