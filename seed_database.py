@@ -9,7 +9,7 @@ from client.models.antennas.Antenna_Snapshot import Antenna_Snapshot
 from mongoengine import *
 import random
 
-connect('ytla')
+connect('mytla')
 
 def main():
     logSys_line_count = 0
@@ -18,10 +18,23 @@ def main():
     logIFLO_X_line_count = 0
     logIFLO_Y_line_count = 0
 
-    for iteration in range(200):
+    # the record to be inserted into the DB
+    datum = Datum()
+    datum.timestamp = '2018-06-30_03:36:00'
 
-        # the record to be inserted into the DB
-        datum = Datum()
+    antennas = []
+    # 7 antennas exist
+    # no. 8 is initialized with the default value of 0 for every attribute
+    for antenna in range(0, 8):
+        # initialize an Antenna_Snapshot object to contain all data specific to
+        # a single antenna at a single moment.
+        datum.antennas.append(Antenna_Snapshot())
+
+    # for iteration in range(200):
+    # for iteration in range(3):
+    for iteration in range(178):
+
+        # tentative_ts, hour_str, min_str = '0', '0', '0'
 
         filepath = 'db_ops/logSys'
         with open(filepath) as fp:
@@ -34,20 +47,29 @@ def main():
             while not line:
                 line = fp.readline().split("    ")
                 logSys_line_count += 1
-            datum.timestamp = line[0]
-            datum.nt_state = line[1]
-            datum.nt_select = line[2]
-            datum.lo_freq = float((line[3]).strip())
-            datum.lo_power = float((line[4]).strip())
 
+            # Check to see if there is a timestamp in the db w/ the same day.
+            tentative_ts = line[0]
+            # grab the hour from the timestamp sans any leading zero
+            hour_str = str(int(tentative_ts[11:13]))
+            # grab the minute from the timestamp sans any leading zero
+            min_str = str(int(tentative_ts[14:16]))
 
-        antennas = []
-        # 7 antennas exist
-        # no. 8 is initialized with the default value of 0 for every attribute
-        for antenna in range(0, 8):
-            # initialize an Antenna_Snapshot object to contain all data specific to
-            # a single antenna at a single moment.
-            datum.antennas.append(Antenna_Snapshot())
+            # todays = Datum.objects(timestamp__startswith = tentative_ts[0:10])
+            # if (not todays):
+            #     # it's a new day
+            #     datum = Datum()
+            #     datum.timestamp = tentative_ts
+            # else:
+            #     # it's the same day as before
+            #     datum = todays[0]
+
+            # datum.timestamp = line[0]
+            datum.nt_state[hour_str][min_str] = line[1]
+            datum.nt_select[hour_str][min_str] = line[2]
+            datum.lo_freq[hour_str][min_str] = float((line[3]).strip())
+            datum.lo_power[hour_str][min_str] = float((line[4]).strip())
+
 
 # TODO: DRY this up
         filepath = 'db_ops/logCorr_X'
@@ -62,11 +84,11 @@ def main():
                 line = fp.readline().split("    ")
                 logCorr_X_line_count += 1
             for antenna in range(0,7):
-                datum.antennas[antenna].sel1X = line[2]
-                datum.antennas[antenna].sel2X = line[3]
-                datum.antennas[antenna].intswX = line[4]
-                datum.antennas[antenna].hybrid_selValX = line[5]
-                datum.antennas[antenna].intLenX = float((line[6]).strip())
+                datum.antennas[antenna].sel1X[hour_str][min_str] = line[2]
+                datum.antennas[antenna].sel2X[hour_str][min_str] = line[3]
+                datum.antennas[antenna].intswX[hour_str][min_str] = line[4]
+                datum.antennas[antenna].hybrid_selValX[hour_str][min_str] = line[5]
+                datum.antennas[antenna].intLenX[hour_str][min_str] = float((line[6]).strip())
                 line = fp.readline().split("    ")
                 logCorr_X_line_count += 1
 
@@ -83,11 +105,11 @@ def main():
                 logCorr_Y_line_count += 1
             # print(line)
             for antenna in range(0,7):
-                datum.antennas[antenna].sel1Y = line[2]
-                datum.antennas[antenna].sel2Y = line[3]
-                datum.antennas[antenna].intswY = line[4]
-                datum.antennas[antenna].hybrid_selValY = line[5]
-                datum.antennas[antenna].intLenY = float((line[6]).strip())
+                datum.antennas[antenna].sel1Y[hour_str][min_str] = line[2]
+                datum.antennas[antenna].sel2Y[hour_str][min_str] = line[3]
+                datum.antennas[antenna].intswY[hour_str][min_str] = line[4]
+                datum.antennas[antenna].hybrid_selValY[hour_str][min_str] = line[5]
+                datum.antennas[antenna].intLenY[hour_str][min_str] = float((line[6]).strip())
                 line = fp.readline().split("    ")
                 logCorr_Y_line_count += 1
 
@@ -103,7 +125,7 @@ def main():
                 line = fp.readline().split("    ")
                 logIFLO_X_line_count += 1
             for antenna in range(1, 8):
-                datum.antennas[antenna - 1].iflo_x = float((line[antenna]).strip())
+                datum.antennas[antenna - 1].iflo_x[hour_str][min_str] = float((line[antenna]).strip())
             logIFLO_X_line_count += 1
 
         filepath = 'db_ops/logIFLO_Y'
@@ -118,7 +140,7 @@ def main():
                 line = fp.readline().split("    ")
                 logIFLO_Y_line_count += 1
             for antenna in range(1, 8):
-                datum.antennas[antenna - 1].iflo_y = float((line[antenna]).strip())
+                datum.antennas[antenna - 1].iflo_y[hour_str][min_str] = float((line[antenna]).strip())
             logIFLO_Y_line_count += 1
 
         lf_Xfloat = []
@@ -130,18 +152,28 @@ def main():
         # Assign values for lfI, X and Y
         antCount=0
         for i in range(0, 14, 2):
-            datum.antennas[antCount].lfI_X = lf_Xfloat[i]
-            datum.antennas[antCount].lfI_Y = lf_Yfloat[i]
+            datum.antennas[antCount].lfI_X[hour_str][min_str] = lf_Xfloat[i]
+            datum.antennas[antCount].lfI_Y[hour_str][min_str] = lf_Yfloat[i]
             antCount+=1
 
         # Assign values for lfQ, X and Y
         antCount=0
         for i in range(1, 14, 2):
-            datum.antennas[antCount].lfQ_X = lf_Xfloat[i]
-            datum.antennas[antCount].lfQ_Y = lf_Yfloat[i]
+            datum.antennas[antCount].lfQ_X[hour_str][min_str] = lf_Xfloat[i]
+            datum.antennas[antCount].lfQ_Y[hour_str][min_str] = lf_Yfloat[i]
             antCount+=1
 
-        datum.save() # insert the record into the DB
+        print('\r', end = '')
+        print(f"db seed is {(iteration / 178 * 100):.2f}% complete", end = '')
+
+    print()
+    print("loop complete")
+    try:
+        message = datum.save() # insert the record into the DB
+        print(message)
+    except Exception as err:
+        print(err)
+    print("save happened")
 
 if __name__ == '__main__':
     main()
