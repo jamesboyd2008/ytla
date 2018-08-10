@@ -28,7 +28,7 @@ def searchy(begin, end, refer):
 
     # assuming mongod is running on 'localhost' at port 27017
     # Connect to the DB
-    connect('mytla')
+    connect('ytla')
 
     graph_meta_data = {
         # The user provided "begin", the beginning of the time range of interest
