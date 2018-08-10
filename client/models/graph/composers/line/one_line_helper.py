@@ -3,7 +3,7 @@
 from ... Graph import Graph
 from .... datum.Datum import Datum
 
-def one_line_helper(datum, graph, graph_meta_data, hr, min):
+def one_line_helper(datum, graph, graph_meta_data, hr, min, end_hr, end_min):
     """
     This function processes one day of one attribute's data.
 
@@ -14,8 +14,10 @@ def one_line_helper(datum, graph, graph_meta_data, hr, min):
         datum (Datum) : One hour of YTLA diagnostic information ~ 1 - 3 MB
         graph (Graph) : The object to be visualized.
         graph_meta_data (dict) : The querry attribute, begin and end times.
-        hr (int) : The hour in which the datum was recorded.
-        min (int) : The minute in which the datum was recorded.
+        hr (int) : The hour in which to begin graphing.
+        min (int) : The minute in which to begin graphing.
+        end_hr (int) : The hour in which to end graphing.
+        end_min (int) : The minute in which to end graphing.
 
     Returns:
         graph (Graph) : Data that will be graphed.
@@ -23,8 +25,10 @@ def one_line_helper(datum, graph, graph_meta_data, hr, min):
 
     moment = datum.timestamp.replace('_', ' ')
 
-    for h in range(hr, 24):
-        for m in range(min, 60):
+    # Iterate over all hours, beginning with the first recoded hour of the day.
+    for h in range(hr, end_hr + 1):
+        # Iterate over all minutes within the hour, starting at first recorded.
+        for m in range(min, end_min + 1):
             hr_str = str(h)
             min_str = str(m)
             padded_hr_str = hr_str.zfill(2)

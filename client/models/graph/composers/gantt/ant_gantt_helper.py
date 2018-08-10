@@ -1,9 +1,10 @@
 # This file contains the definition of the ant_gantt_helper function.
 
-from ... Graph import Graph
+from datetime import datetime
 from .... datum.Datum import Datum
+from ... Graph import Graph
 
-def ant_gantt_helper(datum, graph, graph_meta_data, hr, min):
+def ant_gantt_helper(datum, graph, graph_meta_data, hr, min, end_hr, end_min):
     """
     This function processes one day of one attribute's data.
 
@@ -13,8 +14,10 @@ def ant_gantt_helper(datum, graph, graph_meta_data, hr, min):
         datum (Datum) : One hour of YTLA diagnostic information ~ 1 - 3 MB
         graph (Graph) : The object to be visualized.
         graph_meta_data (dict) : The querry attribute, begin and end times.
-        hr (int) : The hour in which the datum was recorded.
-        min (int) : The minute in which the datum was recorded.
+        hr (int) : The hour in which to begin graphing.
+        min (int) : The minute in which to begin graphing.
+        end_hr (int) : The hour in which to end graphing.
+        end_min (int) : The minute in which to end graphing.
 
     Returns:
         graph (Graph) : Data that will be graphed.
@@ -22,8 +25,10 @@ def ant_gantt_helper(datum, graph, graph_meta_data, hr, min):
 
     moment = datum.timestamp.replace('_', ' ')
 
-    for h in range(hr, 24):
-        for m in range(min, 60):
+    # Iterate over all hours, beginning with the first recoded hour of the day.
+    for h in range(hr, end_hr + 1):
+        # Iterate over all minutes within the hour, starting at first recorded.
+        for m in range(min, end_min + 1):
             hr_str = str(h)
             min_str = str(m)
             padded_hr_str = hr_str.zfill(2)
@@ -40,37 +45,41 @@ def ant_gantt_helper(datum, graph, graph_meta_data, hr, min):
             if (not graph.gantt_values_per_antenna[0]):
                 # Append a dict to every list in gantt_values_per_antenna
                 for antenna in range(0, 8):
+                    # Define a variable pointing to the label of the gantt value
+                    label = datum.antennas[antenna][graph_meta_data['attribute']][hr_str][min_str]
                     graph.gantt_values_per_antenna[antenna].append(
                         dict(
                             Task = f"Antenna {antenna}",
                             Start = moment,
                             Finish = moment,
-                            Resource = f"{datum.antennas[antenna][graph_meta_data['attribute']][hr_str][min_str]}"
+                            Resource = label
                         )
                     )
                     # Add the color to the list of colors if it's not there, yet
-                    if (datum.antennas[antenna][graph_meta_data['attribute']][hr_str][min_str] not in graph.color_labels):
-                        graph.color_labels.append(datum.antennas[antenna][graph_meta_data['attribute']][hr_str][min_str])
+                    if (label not in graph.color_labels):
+                        graph.color_labels.append(label)
             # This isn't the first datum found within the time range.
             else:
                 # for each of the 8 antennas
                 for antenna in range(0, 8):
                     # Update the Finish time of the Tasks
                     graph.gantt_values_per_antenna[antenna][-1]['Finish'] = moment
+                    # Define a variable pointing to the label of the gantt value
+                    label = datum.antennas[antenna][graph_meta_data['attribute']][hr_str][min_str]
                     # if the color needs to change
-                    if (graph.gantt_values_per_antenna[antenna][-1]['Resource'] != datum.antennas[antenna][graph_meta_data['attribute']][hr_str][min_str]):
+                    if (graph.gantt_values_per_antenna[antenna][-1]['Resource'] != label):
                         # add a new dict with the new value for the 'Resource' key
                         graph.gantt_values_per_antenna[antenna].append(
                             dict(
                                 Task = f"Antenna {antenna}",
                                 Start = moment,
                                 Finish = moment,
-                                Resource = f"{datum.antennas[antenna][graph_meta_data['attribute']][hr_str][min_str]}"
+                                Resource = label
                             )
                         )
                         # Add the color to the list of colors if it's not there, yet
-                        if (datum.antennas[antenna][graph_meta_data['attribute']][hr_str][min_str] not in graph.color_labels):
-                            graph.color_labels.append(datum.antennas[antenna][graph_meta_data['attribute']][hr_str][min_str])
+                        if (label not in graph.color_labels):
+                            graph.color_labels.append(label)
 
         min = 0
 
