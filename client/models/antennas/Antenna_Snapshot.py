@@ -9,13 +9,13 @@ class Antenna_Snapshot(EmbeddedDocument):
     # http://docs.mongoengine.org/apireference.html#fields
     sel1X = DictField(default=make_a_day(0.0)) # also in the logCorr_X file
     sel2X = DictField(default=make_a_day(0.0)) # also in the logCorr_X file
-    intswX = DictField(default=make_a_day(0.0)) # also in the logCorr_X file
-    hybrid_selValX = DictField(default=make_a_day(0.0)) # also in the logCorr_X file
+    intswX = DictField(default=make_a_day("dummy data")) # also in the logCorr_X file
+    hybrid_selValX = DictField(default=make_a_day("dummy data")) # also in the logCorr_X file
     intLenX = DictField(default=make_a_day(0.0)) # also in the logCorr_X file
     sel1Y = DictField(default=make_a_day(0.0)) # also in the logCorr_Y file
     sel2Y = DictField(default=make_a_day(0.0)) # also in the logCorr_Y file
-    intswY = DictField(default=make_a_day(0.0)) # also in the logCorr_Y file
-    hybrid_selValY = DictField(default=make_a_day(0.0)) # also in logCorr_Y
+    intswY = DictField(default=make_a_day("dummy data")) # also in the logCorr_Y file
+    hybrid_selValY = DictField(default=make_a_day("dummy data")) # also in logCorr_Y
     intLenY = DictField(default=make_a_day(0.0)) # also in the logCorr_Y file
     iflo_x = DictField(default=make_a_day(0.0)) # also in the logIFLO_X file
     iflo_y = DictField(default=make_a_day(0.0)) # also in the logIFLO_Y file
