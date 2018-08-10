@@ -28,7 +28,7 @@ def datum_helper(data, graph_meta_data):
     begin = datetime.strptime( graph_meta_data['begin'], "%Y-%m-%d_%H:%M")
     x_val_quant = int(( end - begin ).total_seconds() / 60)
 
-    print(f"big data.count() --> {data.count()}")
+    print(f"quantity of days --> {len(data)}")
     # Choose appropriate visualization
     if (graph_meta_data['attribute'] in gantt_chart_per_antenna):
         graph = ant_gantt_c(data, graph_meta_data, x_val_quant)

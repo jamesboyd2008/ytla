@@ -24,7 +24,7 @@ def one_gantt_c(data, graph_meta_data, x_val_quant):
     # Grab the minute at which to begin graphing.
     min = int(graph_meta_data['begin'][14:16])
     # The number of days in data
-    quant = data.count()
+    quant = len(data)
 
     # Iterate over the 24 hour blocks of data.
     for i in range(quant):
