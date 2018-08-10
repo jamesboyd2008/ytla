@@ -1,6 +1,8 @@
 # This file defines ant_gantt_g function.
 
+import random
 from .... search.search_imports import *
+import string
 
 def ant_gantt_g(graph, title):
     """
@@ -40,10 +42,14 @@ def ant_gantt_g(graph, title):
         show_colorbar = True,
         title = title
     )
+
+    # Generate a pseudorandom filename.
+    fn = ''.join(random.choices(string.ascii_letters,k=7)) + '.html'
+
     # Display the gantt chart
     plotly.offline.plot(
         figure,
-        filename = r"visualization.html",
+        filename = fn,
         auto_open = True
     )
 
