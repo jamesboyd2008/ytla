@@ -26,8 +26,13 @@ def ant_line_helper(datum, graph, graph_meta_data, hr, min, end_hr, end_min):
 
     # Iterate over all hours, beginning with the first recoded hour of the day.
     for h in range(hr, end_hr + 1):
+        # Determine whether it's the final hour.
+        if h == end_hr: # it's the last hour in range
+            end = end_min + 1
+        else:
+            end = 60
         # Iterate over all minutes within the hour, starting at first recorded.
-        for m in range(min, end_min + 1):
+        for m in range(min, end):
             hr_str = str(h)
             min_str = str(m)
             padded_hr_str = hr_str.zfill(2)
