@@ -44,7 +44,7 @@ def create_app(configfile=None):
             delta_t = end_check - begin_check
             print(f"delta_t.days --> {delta_t.days}")
             if delta_t.days >= 7:
-                flash("Time range more than 1 week. This will take minuteS.")
+                flash("Time range more than 1 week. This may take an hour.")
 
             plottable = False
             empty_field_counter = 0
