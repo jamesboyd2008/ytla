@@ -104,7 +104,7 @@ while (1):
         # 2 seconds.
         not_yet = True
         while not_yet:
-            timenow = datetime.datetime.now()
+            timenow = datetime.now()
             if timenow.second % 2 == 0:
                 not_yet = False
             else:
