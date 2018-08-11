@@ -18,7 +18,7 @@ class Graph(Document):
         # For antenna-agnostic data that will be represented with a gantt chart
         attr_states = ListField(default = [])
         # For antenna-agnostic data that will be represneted with a gantt chart
-        attr_state = 'placeholder'
+        attr_state = StringField(default = 'placeholder')
         # For timestamps
         x_values = ListField(default = [])
         # Objects that will be given to plotly for plotting
