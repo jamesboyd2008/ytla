@@ -114,7 +114,7 @@ while (1):
         min_str = str(int(timenow[14:16]))
 
         # Confirm whether today's Datum already exists.
-        result = Datum.objects(timestamp = timenow)
+        result = Datum.objects(timestamp__startswith = timenow[0:13])
         if result:
             datum = result[0]
         else:
