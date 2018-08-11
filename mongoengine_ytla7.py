@@ -114,11 +114,13 @@ while (1):
         min_str = str(int(timenow[14:16]))
 
         # Confirm whether today's Datum already exists.
-
-
-        # intantiate a Datum object to hold all data associated with the same timestamp
-        # such as antenna data
-        datum = Datum()
+        result = Datum.objects(timestamp = timenow)
+        if result:
+            datum = result[0]
+        else:
+            # intantiate a Datum object to hold all data associated with the same timestamp
+            # such as antenna data
+            datum = Datum()
 
         # a collection for Antenna_Snapshot objects
         antennas = []
