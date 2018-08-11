@@ -109,7 +109,9 @@ while (1):
                 not_yet = False
             else:
                 time.sleep(0.5)
-        timenow = timenow.strftime('%Y-%m-%d_%H:%M:%S')
+        timenow = timenow.strftime('%Y-%m-%d_%H:%M')
+        hr_str = str(int(timenow[11:13]))
+        min_str = str(int(timenow[14:16]))
 
         # Confirm whether today's Datum already exists.
 
@@ -133,7 +135,7 @@ while (1):
 
 
         # note when the data was collected
-        datum.timestamp = timenow
+        # datum.timestamp = timenow
 
         print timenow
         flogCorrX=open(logfileX,"a")
@@ -193,11 +195,11 @@ while (1):
 
         # Add data for each antenna
         for i in range(0, 8):
-            datum.antennas[i].sel1X = sel1X[i]
-            datum.antennas[i].sel2X = sel2X[i]
-            datum.antennas[i].intswX = intswValX[i]
-            datum.antennas[i].hybrid_selValX = hybrid_selValX[i]
-            datum.antennas[i].intLenX = intLenX[i]
+            datum.antennas[i]sel1X[hr_str][min_str] = sel1X[i]
+            datum.antennas[i]sel2X[hr_str][min_str] = sel2X[i]
+            datum.antennas[i]intswX[hr_str][min_str] = intswValX[i]
+            datum.antennas[i]hybrid_selValX[hr_str][min_str] = hybrid_selValX[i]
+            datum.antennas[i]intLenX[hr_str][min_str] = intLenX[i]
 
         if (jCorrX == 0):
           flogCorrX.write("%20s %17s %20s %20s %15s \n"%("Timestamp", "Walsh Num", "Interrupt Select", "SRR Selection", "Integration time"))
@@ -267,11 +269,11 @@ while (1):
 
         # Add data for each antenna
         for i in range(0, 8):
-            datum.antennas[i].sel1Y = sel1Y[i]
-            datum.antennas[i].sel2Y = sel2Y[i]
-            datum.antennas[i].intswY = intswValY[i]
-            datum.antennas[i].hybrid_selValY = hybrid_selValY[i]
-            datum.antennas[i].intLenY = intLenY[i]
+            datum.antennas[i]sel1Y[hr_str][min_str] = sel1Y[i]
+            datum.antennas[i]sel2Y[hr_str][min_str] = sel2Y[i]
+            datum.antennas[i]intswY[hr_str][min_str] = intswValY[i]
+            datum.antennas[i]hybrid_selValY[hr_str][min_str] = hybrid_selValY[i]
+            datum.antennas[i]intLenY[hr_str][min_str] = intLenY[i]
 
         if (jCorrY == 0):
           flogCorrY.write("%20s %17s %20s %20s %15s \n"%("Timestamp", "Walsh Num", "Interrupt Select", "SRR Selection", "Integration time"))
@@ -317,10 +319,10 @@ while (1):
 
         # Add data associated with all antennas to the record
         datum.timestamp = timenow
-        datum.nt_state = NTState
-        datum.nt_select = NTSelect
-        datum.lo_freq = LOfreq
-        datum.lo_power = LOpower
+        datum.nt_state[hr_str][min_str] = NTState
+        datum.nt_select[hr_str][min_str] = NTSelect
+        datum.lo_freq[hr_str][min_str] = LOfreq
+        datum.lo_power[hr_str][min_str] = LOpower
 
         if (jSys == 0):
             flogSys.write("{:^20}" "{:^30}" "{:25}" "{:^20}" "{:^20}\n".format("Timestamp", "Noise/Tone State", "Noise/Tone Selection", "LO frequency (MHz)", "LO power (dBm)"))
@@ -375,20 +377,20 @@ while (1):
         # Assign values for lfI, X and Y
         antCount=0
         for i in range(0, 14, 2):
-            datum.antennas[antCount].lfI_X = lf_Xfloat[i]
-            datum.antennas[antCount].lfI_Y = lf_Yfloat[i]
+            datum.antennas[antCount].lfI_X[hr_str][min_str] = lf_Xfloat[i]
+            datum.antennas[antCount].lfI_Y[hr_str][min_str] = lf_Yfloat[i]
             antCount+=1
-        datum.antennas[7].lfI_X=0.0
-        datum.antennas[7].lfI_Y=0.0
+        datum.antennas[7].lfI_X[hr_str][min_str]=0.0
+        datum.antennas[7].lfI_Y[hr_str][min_str]=0.0
 
         # Assign values for lfQ, X and Y
         antCount=0
         for i in range(1, 14, 2):
-            datum.antennas[antCount].lfQ_X = lf_Xfloat[i]
-            datum.antennas[antCount].lfQ_Y = lf_Yfloat[i]
+            datum.antennas[antCount].lfQ_X[hr_str][min_str] = lf_Xfloat[i]
+            datum.antennas[antCount].lfQ_Y[hr_str][min_str] = lf_Yfloat[i]
             antCount+=1
-        datum.antennas[7].lfQ_X=0.0
-        datum.antennas[7].lfQ_Y=0.0
+        datum.antennas[7].lfQ_X[hr_str][min_str]=0.0
+        datum.antennas[7].lfQ_Y[hr_str][min_str]=0.0
 
         # Create lists for ease of iteration
         iflo_x_s = [Rx0_1[4], Rx1_1[4], Rx2_1[4], Rx3_1[4], Rx4_1[4], Rx5_1[4], Rx6_1[4]]
@@ -396,10 +398,10 @@ while (1):
 
         # Assign values for iflo, x and y, for every antenna
         for i in range(0, 7):
-            datum.antennas[i].iflo_x = iflo_x_s[i]
-            datum.antennas[i].iflo_y = iflo_y_s[i]
-        datum.antennas[7].iflo_x=0.0
-        datum.antennas[7].iflo_y=0.0
+            datum.antennas[i]iflo_x[hr_str][min_str] = iflo_x_s[i]
+            datum.antennas[i]iflo_y[hr_str][min_str] = iflo_y_s[i]
+        datum.antennas[7].iflo_x[hr_str][min_str]=0.0
+        datum.antennas[7].iflo_y[hr_str][min_str]=0.0
 
         # insert the record into the DB
         datum.save()
