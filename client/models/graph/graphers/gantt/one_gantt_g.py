@@ -1,6 +1,8 @@
 # This file defines the one_gantt_g function.
 
+import random
 from .... search.search_imports import *
+import string
 
 def one_gantt_g(graph, title):
     """
@@ -33,10 +35,13 @@ def one_gantt_g(graph, title):
         title = title
     )
 
+    # Generate a pseudorandom filename.
+    fn = ''.join(random.choices(string.ascii_letters,k=7)) + '.html'
+
     # Display the gantt chart
     plotly.offline.plot(
         graph.data_gettin_visualized,
-        filename = r"visualization.html",
+        filename = fn,
         auto_open = True
     )
 

@@ -11,6 +11,7 @@ def create_app(configfile=None):
     Returns
         app (Flask) : an instance of a Flask application
     """
+    import datetime
     from . helpers.begin_end import begin_end
     from flask import Flask, render_template, request, flash
     from flask_bootstrap import Bootstrap
@@ -37,6 +38,12 @@ def create_app(configfile=None):
             # format timestamps
             begin = begin_end(form, 'begin')
             end = begin_end(form, 'end')
+            # if time range is more than a week, this could take a while
+            begin_check = datetime.datetime.strptime(begin, "%Y-%m-%d_%H:%M")
+            end_check = datetime.datetime.strptime(end, "%Y-%m-%d_%H:%M")
+            delta_t = end_check - begin_check
+            if delta_t.days >= 7:
+                flash("Time range more than 1 week. This might take 3 minutes.")
 
             plottable = False
             empty_field_counter = 0

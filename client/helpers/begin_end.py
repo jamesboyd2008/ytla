@@ -3,7 +3,7 @@
 from ..models.search.SearchForm import SearchForm
 import datetime
 from . timerator import timerator
-# pickup here: move helpers, one at a time, into helpers dir
+
 def begin_end(form, which_var):
     """
     This function formats a timestamp from a SearchForm.
@@ -13,7 +13,7 @@ def begin_end(form, which_var):
         which_var (str) : "begin" or "end", the timestamp to format.
 
     Returns:
-        time (str) : a timestamp formatted thusly -> YYYY-MM-DD_HH:MM:SS.
+        time (str) : a timestamp formatted thusly -> YYYY-MM-DD_HH:MM
     """
 
     # format the timestamps
@@ -21,11 +21,11 @@ def begin_end(form, which_var):
         hours = int(form.hours_prior.raw_data[0]) * -1
         begin = timerator(form.end.raw_data[0])
         # Get a datetime.datetime from a str.
-        begin = datetime.datetime.strptime(begin, "%Y-%m-%d_%H:%M:%S")
+        begin = datetime.datetime.strptime(begin, "%Y-%m-%d_%H:%M")
         subtrahend = datetime.timedelta(hours = hours)
         begin += subtrahend
         # Get a str from a datetime.datetime
-        begin = datetime.datetime.strftime(begin, "%Y-%m-%d_%H:%M:%S")
+        begin = datetime.datetime.strftime(begin, "%Y-%m-%d_%H:%M")
     else:
         begin = timerator(form.from_timestamp.raw_data[0])
     end = timerator(form.end.raw_data[0])

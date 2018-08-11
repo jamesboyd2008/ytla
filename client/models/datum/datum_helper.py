@@ -1,10 +1,11 @@
-# This file contains the datum_helper(arg, arg, arg, ... ) function, which takes arg arg arg and opens an HTML document that displays a graph.
+# This file contains the definition of the datum_helper function.
 
-from .. search.search_imports import *
+import datetime
 from .. graph.composers.gantt.ant_gantt_c import ant_gantt_c
 from .. graph.composers.gantt.one_gantt_c import one_gantt_c
 from .. graph.composers.line.ant_line_c import ant_line_c
 from .. graph.composers.line.one_line_c import one_line_c
+from .. search.search_imports import *
 
 def datum_helper(data, graph_meta_data):
     """
@@ -23,31 +24,19 @@ def datum_helper(data, graph_meta_data):
     # The object that will get graphed
     graph = Graph()
 
-    # To ensure that no more than 500 points are plotted.
-    count = data.count()
-    # TODO: pick handicap more smartlier
-    if count > 1000:
-        if count > 100000000:
-            handicap = 8000000
-        elif count > 10000000:
-            handicap = 800000
-        elif count > 1000000:
-            handicap = 80000
-        elif count > 100000:
-            handicap = 8000
-        elif count > 10000:
-            handicap = 800
-    else:
-        handicap = 1
-    print(f"big data.count() --> {data.count()}")
+    end = datetime.strptime( graph_meta_data['end'], "%Y-%m-%d_%H:%M")
+    begin = datetime.strptime( graph_meta_data['begin'], "%Y-%m-%d_%H:%M")
+    x_val_quant = int(( end - begin ).total_seconds() / 60)
+
+    print(f"quantity of days --> {len(data)}")
     # Choose appropriate visualization
     if (graph_meta_data['attribute'] in gantt_chart_per_antenna):
-        graph = ant_gantt_c(data, graph_meta_data, count, handicap)
+        graph = ant_gantt_c(data, graph_meta_data, x_val_quant)
     elif (graph_meta_data['attribute'] in lone_gantt_chart):
-        graph = one_gantt_c(data, graph_meta_data, count, handicap)
+        graph = one_gantt_c(data, graph_meta_data, x_val_quant)
     elif (graph_meta_data['attribute'] in line_chart_per_antenna):
-        graph = ant_line_c(data, graph_meta_data, count, handicap)
+        graph = ant_line_c(data, graph_meta_data, x_val_quant)
     else: # (graph_meta_data['attribute'] in lone_line_chart):
-        graph = one_line_c(data, graph_meta_data, count, handicap)
+        graph = one_line_c(data, graph_meta_data, x_val_quant)
 
     return graph
