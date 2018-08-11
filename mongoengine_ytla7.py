@@ -195,11 +195,11 @@ while (1):
 
         # Add data for each antenna
         for i in range(0, 8):
-            datum.antennas[i]sel1X[hr_str][min_str] = sel1X[i]
-            datum.antennas[i]sel2X[hr_str][min_str] = sel2X[i]
-            datum.antennas[i]intswX[hr_str][min_str] = intswValX[i]
-            datum.antennas[i]hybrid_selValX[hr_str][min_str] = hybrid_selValX[i]
-            datum.antennas[i]intLenX[hr_str][min_str] = intLenX[i]
+            datum.antennas[i].sel1X[hr_str][min_str] = sel1X[i]
+            datum.antennas[i].sel2X[hr_str][min_str] = sel2X[i]
+            datum.antennas[i].intswX[hr_str][min_str] = intswValX[i]
+            datum.antennas[i].hybrid_selValX[hr_str][min_str] = hybrid_selValX[i]
+            datum.antennas[i].intLenX[hr_str][min_str] = intLenX[i]
 
         if (jCorrX == 0):
           flogCorrX.write("%20s %17s %20s %20s %15s \n"%("Timestamp", "Walsh Num", "Interrupt Select", "SRR Selection", "Integration time"))
@@ -269,11 +269,11 @@ while (1):
 
         # Add data for each antenna
         for i in range(0, 8):
-            datum.antennas[i]sel1Y[hr_str][min_str] = sel1Y[i]
-            datum.antennas[i]sel2Y[hr_str][min_str] = sel2Y[i]
-            datum.antennas[i]intswY[hr_str][min_str] = intswValY[i]
-            datum.antennas[i]hybrid_selValY[hr_str][min_str] = hybrid_selValY[i]
-            datum.antennas[i]intLenY[hr_str][min_str] = intLenY[i]
+            datum.antennas[i].sel1Y[hr_str][min_str] = sel1Y[i]
+            datum.antennas[i].sel2Y[hr_str][min_str] = sel2Y[i]
+            datum.antennas[i].intswY[hr_str][min_str] = intswValY[i]
+            datum.antennas[i].hybrid_selValY[hr_str][min_str] = hybrid_selValY[i]
+            datum.antennas[i].intLenY[hr_str][min_str] = intLenY[i]
 
         if (jCorrY == 0):
           flogCorrY.write("%20s %17s %20s %20s %15s \n"%("Timestamp", "Walsh Num", "Interrupt Select", "SRR Selection", "Integration time"))
@@ -398,8 +398,8 @@ while (1):
 
         # Assign values for iflo, x and y, for every antenna
         for i in range(0, 7):
-            datum.antennas[i]iflo_x[hr_str][min_str] = iflo_x_s[i]
-            datum.antennas[i]iflo_y[hr_str][min_str] = iflo_y_s[i]
+            datum.antennas[i].iflo_x[hr_str][min_str] = iflo_x_s[i]
+            datum.antennas[i].iflo_y[hr_str][min_str] = iflo_y_s[i]
         datum.antennas[7].iflo_x[hr_str][min_str]=0.0
         datum.antennas[7].iflo_y[hr_str][min_str]=0.0
 
