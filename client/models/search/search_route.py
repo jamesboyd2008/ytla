@@ -9,7 +9,7 @@ from .. graph.graphers.plotter import plotter
 from mongoengine import *
 import time
 
-def searchy(begin, end, refer):
+def searchy(begin, end, refer, isAggregation = False):
     """
     This function searches the DB.
 
@@ -24,6 +24,10 @@ def searchy(begin, end, refer):
 
     Returns:
         plottable (bool) : Whether the graph is plottable.
+            or
+        graph (Graph) : If this query originated from a periodic aggregation
+                        script, then a coordinate cluster object (Graph) is
+                        returned.
     """
 
     # assuming mongod is running on 'localhost' at port 27017
@@ -47,7 +51,7 @@ def searchy(begin, end, refer):
         # Query the DB for all dates within the user-provided time range
         data = []
         for datum in Datum.objects:
-            day_beginning = datetime.datetime.strptime(datum.timestamp, "%Y-%m-%d_%H:%M:%S")
+            day_beginning = datetime.datetime.strptime(datum.timestamp, "%Y-%m-%d_%H:%M")
             day_date = day_beginning.date()
             almost_midnight = datetime.time(23, 59, 59)
             day_ending = datetime.datetime.combine(day_date, almost_midnight)
@@ -75,6 +79,11 @@ def searchy(begin, end, refer):
 
     processing_start = time.perf_counter()
     graph = datum_helper(data, graph_meta_data)
+
+    # Determine whether this query came from a periodic aggregation.
+    if isAggregation:
+        return graph
+
     processing_end = time.perf_counter()
     print(f"seconds elapsed for pre-plotly processing: {processing_end - processing_start}")
 
