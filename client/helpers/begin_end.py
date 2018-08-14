@@ -16,8 +16,13 @@ def begin_end(form, which_var):
         time (str) : a timestamp formatted thusly -> YYYY-MM-DD_HH:MM
     """
 
+    begin, end = "", ""
+
     # format the timestamps
-    if (form.hours_prior.raw_data[0]):
+    if (form.quick_search.raw_data[0]):
+        quick = timerator(form.quick_search.raw_data[0])
+        return quick
+    elif (form.hours_prior.raw_data[0]):
         hours = int(form.hours_prior.raw_data[0]) * -1
         begin = timerator(form.end.raw_data[0])
         # Get a datetime.datetime from a str.
@@ -26,9 +31,9 @@ def begin_end(form, which_var):
         begin += subtrahend
         # Get a str from a datetime.datetime
         begin = datetime.datetime.strftime(begin, "%Y-%m-%d_%H:%M")
-    else:
+    else:# (form.from_timestamp.raw_data[0]):
         begin = timerator(form.from_timestamp.raw_data[0])
-    end = timerator(form.end.raw_data[0])
+        end = timerator(form.end.raw_data[0])
 
     if which_var == "begin":
         time = begin

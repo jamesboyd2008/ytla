@@ -50,22 +50,31 @@ class SearchForm(FlaskForm):
             ('lo_power', 'lo_power'),
         ]
     )
+    # datetimepicker http://eonasdan.github.io/bootstrap-datetimepicker/
+    quick_search = DateField(
+        id = 'quick_dtpicker',
+        label = 'Quick search:',
+        validators = [ Length(min=18, max=19) ]
+        # validators = [ DataRequired(), Length(min=18, max=19) ]
+    )
     # The beginning of the date range, counting backwards from now.
     hours_prior = IntegerField(
         id = "hours_prior",
         label= "From this many hours prior:"
     )
-    # beginning datetimepicker http://eonasdan.github.io/bootstrap-datetimepicker/
+    # beginning datetimepicker
     from_timestamp = DateField(
         id = 'begin_dtpicker',
-        label = 'From timestamp:',
-        validators = [ DataRequired(), Length(min=18, max=19) ]
+        label = 'Slow search start:',
+        validators = [ Length(min=18, max=19) ]
+        # validators = [ DataRequired(), Length(min=18, max=19) ]
     )
     # ending datetimepicker
     end = DateField(
         id = 'end_dtpicker',
-        label = 'Until:',
-        validators = [ DataRequired(), Length(min=18, max=19) ]
+        label = 'Slow search end:',
+        validators = [ Length(min=18, max=19) ]
+        # validators = [ DataRequired(), Length(min=18, max=19) ]
     )
     # Search button
     submit_button = SubmitField('Search')

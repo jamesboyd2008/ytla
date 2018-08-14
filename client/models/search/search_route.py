@@ -79,7 +79,6 @@ def searchy(begin, end, refer, isAggregation = False):
 
     processing_start = time.perf_counter()
     graph = datum_helper(data, graph_meta_data)
-
     # Determine whether this query came from a periodic aggregation.
     if isAggregation:
         return graph
