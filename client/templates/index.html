@@ -28,6 +28,9 @@
     <script src="{{url_for('.static', filename='moment.min.js')}}"></script>
     <script src="{{url_for('.static', filename='bootstrap-datetimepicker.min.js')}}"></script>
     <script type="text/javascript">
+        $(function () { $('#quick_dtpicker').datetimepicker(); });
+    </script>
+    <script type="text/javascript">
         $(function () { $('#begin_dtpicker').datetimepicker(); });
     </script>
     <script type="text/javascript">

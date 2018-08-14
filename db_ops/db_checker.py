@@ -16,7 +16,6 @@ def main():
 
     for datum in Datum.objects:
         for num in range(0, 8):
-            # print(f"datum.antennas[num].iflo_x: {datum.antennas[num].iflo_x}")
             nums[num].append(datum.antennas[num].iflo_x)
 
     for num in range(0, 8):

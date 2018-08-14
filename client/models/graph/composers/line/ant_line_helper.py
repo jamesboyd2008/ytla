@@ -42,7 +42,6 @@ def ant_line_helper(datum, graph, graph_meta_data, hr, min, end_hr, end_min):
             moment += padded_hr_str + ':' + padded_min_str
             # Add the x coordinate of the (x,y) pair
             graph.x_values.append(moment)
-
             for antenna in range(0, 8):
                 # Add the y coordinate of the (x,y) pair
                 graph.y_values_per_antenna[antenna].\

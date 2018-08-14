@@ -18,6 +18,7 @@ def create_app(configfile=None):
     from flask_appconfig import AppConfig
     from . models.search.SearchForm import SearchForm
     from . models.search.search_route import searchy
+    from . models.search.quick_search import quick_search
 
     app = Flask(__name__)
     AppConfig(app, configfile)  # Flask-Appconfig is not necessary, but
@@ -36,21 +37,27 @@ def create_app(configfile=None):
             fields = ["x_pol", "y_pol", "gen_sys"]
 
             # format timestamps
-            begin = begin_end(form, 'begin')
-            end = begin_end(form, 'end')
-            # if time range is more than a week, this could take a while
-            begin_check = datetime.datetime.strptime(begin, "%Y-%m-%d_%H:%M")
-            end_check = datetime.datetime.strptime(end, "%Y-%m-%d_%H:%M")
-            delta_t = end_check - begin_check
-            if delta_t.days >= 7:
-                flash("Time range more than 1 week. This might take 3 minutes.")
+            if form.quick_search.raw_data[0]:
+                quick = begin_end(form, 'quick')
+            else:
+                begin = begin_end(form, 'begin')
+                end = begin_end(form, 'end')
+                # if time range is more than a week, this could take a while
+                begin_check = datetime.datetime.strptime(begin, "%Y-%m-%d_%H:%M")
+                end_check = datetime.datetime.strptime(end, "%Y-%m-%d_%H:%M")
+                delta_t = end_check - begin_check
+                if delta_t.days >= 7:
+                    flash("Time range more than 1 week. This might take 3 minutes.")
 
             plottable = False
             empty_field_counter = 0
             for i in range(3):
                 # generate an HTML document with a graph of selected data
                 if (form[fields[i]].raw_data[0] != ""):
-                    plottable = searchy(begin, end, form[fields[i]].raw_data[0])
+                    if (form.quick_search.raw_data[0] != ""):
+                        plottable = quick_search(quick, form[fields[i]].raw_data[0])
+                    else:
+                        plottable = searchy(begin, end, form[fields[i]].raw_data[0])
                 else:
                     empty_field_counter += 1
 
