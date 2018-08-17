@@ -4,8 +4,11 @@
 # import time
 # from .. antennas.Antenna_Snapshot import Antenna_Snapshot
 # from ... helpers.make_a_day import make_a_day
-from .. graph.Graph import Graph
+# from .. graph.Graph import Graph
+from .. datum.Datum import Datum
 from mongoengine import *
+
+# TODO: save Datum objs instead of graphs inside Aggregation objs.
 
 class Aggregation(Document):
     """
@@ -15,4 +18,4 @@ class Aggregation(Document):
     # http://docs.mongoengine.org/apireference.html#fields
     timestamp = StringField() # "%Y-%m-%d_%H:%M"
     attr = StringField()
-    graph = EmbeddedDocumentField(Graph)
+    datum = EmbeddedDocumentField(Datum)

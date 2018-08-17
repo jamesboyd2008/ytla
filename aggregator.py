@@ -41,11 +41,11 @@ def main():
     for i in range(len(attrs)):
         # Conduct a DB query of the past 24 hours
         try:
-            graph = searchy(begin, end, attrs[i], True)
+            datum = searchy(begin, end, attrs[i], True)
             aggr = Aggregation()
             aggr.timestamp = datetime.datetime.strftime(yesterdate, "%Y-%m-%d")
             aggr.attr = attrs[i]
-            aggr.graph = graph
+            aggr.datum = datum
             aggr.save()
         except Exception as err:
             print(err)
