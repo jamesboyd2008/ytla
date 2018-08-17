@@ -121,18 +121,17 @@ while (1):
             # intantiate a Datum object to hold all data associated with the same timestamp
             # such as antenna data
             datum = Datum()
+            # a collection for Antenna_Snapshot objects
+            antennas = []
+            # 7 antennas exist
+            # an 8th antenna is added for consistency
+            for antenna in range(0, 8):
+                # initialize an Antenna_Snapshot object to contain all data specific to
+                # a single antenna at a single moment.
+                antennas.append(Antenna_Snapshot())
 
-        # a collection for Antenna_Snapshot objects
-        antennas = []
-        # 7 antennas exist
-        # an 8th antenna is added for consistency
-        for antenna in range(0, 8):
-            # initialize an Antenna_Snapshot object to contain all data specific to
-            # a single antenna at a single moment.
-            antennas.append(Antenna_Snapshot())
-
-        # Add the antennas to the record
-        datum.antennas = antennas
+            # Add the antennas to the record
+            datum.antennas = antennas
 
 
 
