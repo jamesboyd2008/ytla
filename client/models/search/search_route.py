@@ -53,6 +53,8 @@ def searchy(begin, end, refer, isAggregation = False):
         for datum in Datum.objects:
             day_beginning = datetime.datetime.strptime(datum.timestamp, "%Y-%m-%d_%H:%M")
             day_date = day_beginning.date()
+            midnight = datetime.time(0, 0, 0)
+            day_beginning = datetime.datetime.combine(day_date, midnight)
             almost_midnight = datetime.time(23, 59, 59)
             day_ending = datetime.datetime.combine(day_date, almost_midnight)
             search_start = datetime.datetime.strptime(begin, "%Y-%m-%d_%H:%M")
@@ -73,15 +75,17 @@ def searchy(begin, end, refer, isAggregation = False):
         #                      timestamp__lte=graph_meta_data['end'])
 
         query_end = time.perf_counter()
-        print(f"seconds elapsed for DB query: {query_end - query_start}")
+        if not isAggregation:
+            print(f"seconds elapsed for DB query: {query_end - query_start}")
     except Exception as err:
         print(err)
 
-    processing_start = time.perf_counter()
-    graph = datum_helper(data, graph_meta_data)
     # Determine whether this query came from a periodic aggregation.
     if isAggregation:
-        return graph
+        return data[0]
+
+    processing_start = time.perf_counter()
+    graph = datum_helper(data, graph_meta_data)
 
     processing_end = time.perf_counter()
     print(f"seconds elapsed for pre-plotly processing: {processing_end - processing_start}")
